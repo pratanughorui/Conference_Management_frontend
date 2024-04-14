@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import Login from './components/login'
+
 import AuthorRegistration from './components/AuthorRegistration'
 import { BrowserRouter,Routes,Route } from 'react-router-dom'
 import ConferenceCreation from './components/ConferenceCreation'
