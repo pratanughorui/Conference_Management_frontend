@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import Admin_Layout from './admin_layout.jsx'
+import Admin_Layout from './Admin_Layout.jsx'
 import AuthorRegistration from './components/AuthorRegistration'
 import ConferenceCreation from './components/ConferenceCreation'
 import TrackCreation from './components/TrackCreation'
