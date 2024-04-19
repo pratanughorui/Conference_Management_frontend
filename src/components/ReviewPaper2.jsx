@@ -182,7 +182,7 @@ const fetchPdfOnClick = () => {
       gradding:allCriteriaData
     }
     console.log(final);
-    axios.post(`http://localhost:3030/reviewer/reviewsubmit`,final).then((Response)=>{
+    axios.post(`https://conference-management-backend-withnode-1.onrender.com/reviewer/reviewsubmit`,final).then((Response)=>{
       console.log(Response.data);
       alert(Response.data.message);
       window.location.reload();

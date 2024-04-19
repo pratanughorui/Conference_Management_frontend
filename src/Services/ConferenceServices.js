@@ -25,10 +25,10 @@ export const createAuthorWork = (authorwork,topicid,conferenceId,pdffile) => {
      formData.append("data",x);
     //return axios.post(`http://localhost:9090/authors/uploadwork/${topicid}/${conferenceId}`,formData);
 
-    return axios.post(`http://localhost:3030/author/upload/${topicid}/${conferenceId}`,formData);
+    return axios.post(`${REST_API_BASE_URL}/author/upload/${topicid}/${conferenceId}`,formData);
   };
 export const createConference=(conference)=>{
-   return axios.post('http://localhost:3030/conference/create',conference);
+   return axios.post('${REST_API_BASE_URL}/conference/create',conference);
 };
 //get all conference between recent date
 export const listConferenceBtwDate=()=>{
@@ -38,7 +38,7 @@ export const listConferenceBtwDate=()=>{
 export const createTracks=(conferenceId,tracks)=>{
   console.log(conferenceId);
   //return axios.post(`http://localhost:9090/track/createtrack/${conferenceId}`,tracks);
-  return axios.put(`http://localhost:3030/conference/addtracks/${conferenceId}`,tracks);
+  return axios.put(`${REST_API_BASE_URL}/conference/addtracks/${conferenceId}`,tracks);
 }
 //get all tracks
 export const getalltracks=(conferenceid)=>{
@@ -53,7 +53,7 @@ export const getallreviewersbytrack=(track_id)=>{
 // create topic
 export const createTopics=(trackId,topics)=>{
   //return axios.post(`http://localhost:9090/topic/createtopic/${trackId}`,topics);
-  return axios.put(`http://localhost:3030/conference/addtopics/${trackId}`,topics);
+  return axios.put(`${REST_API_BASE_URL}/conference/addtopics/${trackId}`,topics);
 }
 
 
@@ -67,7 +67,7 @@ export const createCommitteeMembers=(members,conference_id,committee_id)=>{
 }
 export const createReviewers=(members,conference_id)=>{
   //return axios.post(`http://localhost:9090/Reviewer/createreviewer/${conference_id}`,members);
-  return axios.post(`http://localhost:3030/reviewer/create/${conference_id}`,members);
+  return axios.post(`${REST_API_BASE_URL}/reviewer/create/${conference_id}`,members);
 }
 
 //fetch all users before recent date
@@ -92,24 +92,24 @@ export const createCommittee=(conferenceId,committee)=>{
 //create paper allotments
 export const createPaperallot=(informationdb)=>{
  // return axios.post(`http://localhost:9090/allotment/papersallot`,informationdb)
-  return axios.post(`http://localhost:3030/paper/allotments`,informationdb) 
+  return axios.post(`${REST_API_BASE_URL}/paper/allotments`,informationdb) 
 }
 
 export const emailsend=(topic_id,date,name,designation)=>{
   const data={date,name,designation};
   console.log(topic_id);
   //return axios.post(`http://localhost:9090/Email/send/${topic_id}`,data)
-  return axios.post(`http://localhost:3030/paper/sendMails/${topic_id}`,data)
+  return axios.post(`${REST_API_BASE_URL}/paper/sendMails/${topic_id}`,data)
 }
 
 export const fetchreviewer=(reviewerId)=>{
   //return axios.get(`http://localhost:9090/Reviewer/getreviewerbyid/${reviewerId}`);
-  return axios.get(`http://localhost:3030/reviewer/fetchreviewerbyid/${reviewerId}`);
+  return axios.get(`${REST_API_BASE_URL}/reviewer/fetchreviewerbyid/${reviewerId}`);
 }
 
 export const getAllConference=()=>{
   // return axios.get(`http://localhost:9090/conference/getAllConference`)
-  return axios.get(`https://conference-management-backend-withnode-1.onrender.com/conference/getallconference`);
+  return axios.get(`${REST_API_BASE_URL}/conference/getallconference`);
 }
 export const setConferenceToSession=(conference_id)=>{
   return axios.get(`http://localhost:9090/conference/setSessionData/${conference_id}`,{withCredentials:true});
@@ -132,7 +132,7 @@ export const getConferenceById=()=>{
 export const getpdf = (authorId) => {
   return new Promise((resolve, reject) => {
     //http://localhost:9090/pdf/${authorId}
-    axios.get(`http://localhost:3030/paper/getpdf/${authorId}`, {
+    axios.get(`${REST_API_BASE_URL}/paper/getpdf/${authorId}`, {
       responseType: 'arraybuffer',
     })
     .then((response) => {
@@ -149,5 +149,5 @@ export const getpdf = (authorId) => {
 
 export const fetchauthorwork=(id)=>{
 // return axios.get(`http://localhost:9090/authors/getauthorwork/${id}`);
-return axios.get(`http://localhost:3030/author/fetchpaperbyid/${id}`);
+return axios.get(`${REST_API_BASE_URL}/author/fetchpaperbyid/${id}`);
 }
