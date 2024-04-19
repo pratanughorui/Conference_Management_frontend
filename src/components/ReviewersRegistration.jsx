@@ -34,12 +34,7 @@ useEffect(()=>{
 },[])
 
 const trackFetching=()=>{
-  getalltracks(conference.conference_id).then((Response)=>{
-     setTracks(Response.data);
-     console.log(Response.data);
-  }).catch((err)=>{
-    console.log(err);
-  })
+ setTracks(conference.tracks);
 }
 let [count,setCount]=useState(0);
 const handleSubmit=(e)=>{
@@ -136,22 +131,35 @@ const delnewmwmber=(index)=>{
 };
 const finalsave=(e)=>{
   e.preventDefault();
-  createReviewers(newmembers,trackid).then((Response)=>{
+  
+  const transformedData = {
+    "reviewers": newmembers.map(item => ({
+        "name": item.name,
+        "affiliation": item.affiliation,
+        "country": item.country,
+        "password": item.password,
+        "mobile": item.mobile,
+        "email": item.email
+    }))
+};
+console.log(transformedData);
+  createReviewers(transformedData,trackid).then((Response)=>{
+    alert(Response.data.message);
     //console.log(Response.data);
-    setCompletionMessage(Response.data);
+    // setCompletionMessage(Response.data);
     clearnewmembersTable();
     clearFields();
-    count=0;
-    setTimeout(()=>{
-      setCompletionMessage('');
-     },2000)
+    // count=0;
+    // setTimeout(()=>{
+    //   setCompletionMessage('');
+    //  },2000)
     
   }).catch((err)=>{
-    //console.log(err.response.data.message);
-    setErrorMessage(err.response.data.message);
-    setTimeout(()=>{
-      setErrorMessage('');
-     },2000)
+    console.log(err);
+    // setErrorMessage(err.response.data.message);
+    // setTimeout(()=>{
+    //   setErrorMessage('');
+    //  },2000)
   })
  
 }
@@ -167,7 +175,7 @@ console.log(e.target.value);
     <div className="container mt-5">
             <div className="row">
             <p className="text-start conference-info">
-  <span style={{ fontSize: '18px', fontWeight: 'bold', color: 'teal' }}>Conference Name: {conference.conferences_title}</span>
+  <span style={{ fontSize: '18px', fontWeight: 'bold', color: 'teal' }}>Conference Name: {conference.conference_title}</span>
 </p>
                 <div className="col-md-6">
                  <div className="card">
@@ -183,7 +191,7 @@ console.log(e.target.value);
                     
                   {
                     tracks.map(con=>
-                        <option key={con.track_id} value={con.track_id}>{con.track_name}</option>
+                        <option key={con._id} value={con._id}>{con.track_name}</option>
                        )
                   }
                   </select>

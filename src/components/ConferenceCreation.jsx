@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 const ConferenceCreation = () => {
   const navigate = useNavigate();
     const [conferences_title, setConferences_title] = useState('');
+    const [shortname, setShortname] = useState('');
+    const [expectPaper, setExpectPaper] = useState('');
     const [website, setWebsite] = useState('');
     const [venue, setVenue] = useState('');
     const [address, setAddress] = useState('');
@@ -50,13 +52,35 @@ const ConferenceCreation = () => {
       return;
     }
     console.log("fff");
-    const conference={conferences_title,address,state,website,venue,place,country,fromDate,toDate,datecallpaper,lastdatesubpaper,dateofallotpaper,lastdaterevsub};
+    //const conference={conferences_title,shortname,website,venue,address,place,state,country,fromDate,toDate,datecallpaper,lastdatesubpaper,dateofallotpaper,lastdaterevsub,expectPaper};
+    //console.log(conference);
+    const conference={
+      conference_title: conferences_title,
+      short_name: shortname,
+      website: website,
+      venue: venue,
+      address: address,
+      place: place,
+       state: state,
+      country: country,
+  from_date: fromDate,
+  to_date: toDate,
+  last_date_paper_sub: lastdatesubpaper,
+  date_allot_paper_torev: dateofallotpaper,
+  last_date_review_sub: lastdaterevsub,
+  number_of_papers: expectPaper
+    }
+    console.log(conference);
     createConference(conference).then((Response)=>{
       console.log(Response.data);
       setCompletionMessage('Conference created successfully!');
       setConferences_title('');
-      // setSubject('');
+      setWebsite('');
+      setShortname('');
+      setAddress('');
+      setState('');
       setVenue('');
+      setExpectPaper('');
       setPlace('');
       setCountry('');
       setFromDate('');
@@ -65,35 +89,21 @@ const ConferenceCreation = () => {
       setDateofallotpaper('');
       setLastdaterevsub('');
       setLastdatesubpaper('');
-      setTimeout(()=>{
-        navigate(-1);
+      // setTimeout(()=>{
+      //   navigate(-1);
   
-      },2000);
+      // },2000);
+      setTimeout(() => {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth' // Smooth scroll behavior
+        });
+      }, 1000);
     }).catch((err)=>{
-      console.log("love");
+      // console.log("love");
       console.log(err);
     })
-    console.log({
-      conferences_title,
-      // subject,
-      venue,
-      place,
-      country,
-      fromDate,
-      toDate,
-      datecallpaper,
-      lastdatesubpaper,
-      dateofallotpaper,
-      lastdaterevsub
-    });
-    // // Reset form fields after submission
-    // setConferenceTitle('');
-    // setSubject('');
-    // setVenue('');
-    // setPlace('');
-    // setCountry('');
-    // setFromDate('');
-    // setToDate('');
+   
   };
   return (
     <div className="container mt-5">
@@ -120,8 +130,9 @@ const ConferenceCreation = () => {
                <label className="form-label">Short Name:</label>
               <input
                 type="text"
-                className={`form-control mb-3 ${errors.conferences_title ? 'is-invalid' : ''}`}
-                
+                className="form-control mb-3"
+                value={shortname}
+                onChange={(e) => setShortname(e.target.value)}
               />
                
 
@@ -231,31 +242,31 @@ const ConferenceCreation = () => {
                             <label className="form-label d-block">How many submission do you expect</label>
                            
                             <div className="form-check form-check-inline">
-                                <input className="form-check-input" type="radio" name="radioOption" id="radioOption3" value="<100" />
+                                <input className="form-check-input" type="radio" name="radioOption" id="radioOption3" value="<100" checked={expectPaper === "<100"} onChange={(e) => setExpectPaper(e.target.value)} />
                                 <label className="form-check-label" htmlFor="radioOption3">&lt;100</label>
                             </div><br />
                             <div className="form-check form-check-inline">
-                                <input className="form-check-input" type="radio" name="radioOption" id="radioOption4" value="<500" />
+                                <input className="form-check-input" type="radio" name="radioOption" id="radioOption4" value="<500" onChange={(e) => setExpectPaper(e.target.value)}/>
                                 <label className="form-check-label" htmlFor="radioOption4">&lt;500</label>
                             </div><br />
                             <div className="form-check form-check-inline">
-                                <input className="form-check-input" type="radio" name="radioOption" id="radioOption5" value="<1000" />
+                                <input className="form-check-input" type="radio" name="radioOption" id="radioOption5" value="<1000" onChange={(e) => setExpectPaper(e.target.value)}/>
                                 <label className="form-check-label" htmlFor="radioOption5">&lt;1000</label>
                             </div><br />
                             <div className="form-check form-check-inline">
-                                <input className="form-check-input" type="radio" name="radioOption" id="radioOption6" value="<2000" />
+                                <input className="form-check-input" type="radio" name="radioOption" id="radioOption6" value="<2000" onChange={(e) => setExpectPaper(e.target.value)}/>
                                 <label className="form-check-label" htmlFor="radioOption6">&lt;2000</label>
                             </div><br />
                             <div className="form-check form-check-inline">
-                                <input className="form-check-input" type="radio" name="radioOption" id="radioOption7" value="<5000" />
+                                <input className="form-check-input" type="radio" name="radioOption" id="radioOption7" value="<5000" onChange={(e) => setExpectPaper(e.target.value)}/>
                                 <label className="form-check-label" htmlFor="radioOption7">&lt;5000</label>
                             </div><br />
                             <div className="form-check form-check-inline">
-                                <input className="form-check-input" type="radio" name="radioOption" id="radioOption8" value="<10000" />
+                                <input className="form-check-input" type="radio" name="radioOption" id="radioOption8" value="<10000" onChange={(e) => setExpectPaper(e.target.value)}/>
                                 <label className="form-check-label" htmlFor="radioOption8">&lt;10000</label>
                             </div><br />
                             <div className="form-check form-check-inline">
-                                <input className="form-check-input" type="radio" name="radioOption" id="radioOption9" value="option1" />
+                                <input className="form-check-input" type="radio" name="radioOption" id="radioOption9" value="option1" onChange={(e) => setExpectPaper(e.target.value)}/>
                                 <label className="form-check-label" htmlFor="radioOption9">&lt;20000</label>
                             </div>
                             

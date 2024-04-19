@@ -2,31 +2,33 @@ import axios from "axios";
 const REST_API_BASE_URL="http://localhost:9090/conference/getAllConference";
 export const listConference=()=>axios.get(REST_API_BASE_URL);  
 //create authors
-export const createAuthorWork = (authorwork,topicid,conferenceId,CoAuthors) => {
+export const createAuthorWork = (authorwork,topicid,conferenceId,pdffile) => {
+  console.log(conferenceId);
      const formData = new FormData();
-     formData.append("pdfFiles",authorwork.pdfFile);
-     const authorData = {
-      name: authorwork.name,
-      address: authorwork.address,
-      state: authorwork.state,
-      country: authorwork.country,
-      cont_no: authorwork.contactNumber,
-      email: authorwork.email,
-      title: authorwork.title,
-      track: authorwork.track,
-      key_words: authorwork.keywords,
-      abstractText: authorwork.abstract,
-      // CoAuthors: CoAuthors  // Pass the coAuthors array directly
-    };
+     formData.append("pdf",pdffile);
+    //  const authorData = {
+    //   name: authorwork.name,
+    //   address: authorwork.address,
+    //   state: authorwork.state,
+    //   country: authorwork.country,
+    //   cont_no: authorwork.contactNumber,
+    //   email: authorwork.email,
+    //   title: authorwork.title,
+    //   track: authorwork.track,
+    //   key_words: authorwork.keywords,
+    //   abstractText: authorwork.abstract,
+    //   // CoAuthors: CoAuthors  // Pass the coAuthors array directly
+    // };
   
     // Convert authorData object to JSON string
-    const x = JSON.stringify(authorData);
-     formData.append("name",x);
-     formData.append("coauthor",JSON.stringify(CoAuthors));
-    return axios.post(`http://localhost:9090/authors/uploadwork/${topicid}/${conferenceId}`,formData);
+    const x = JSON.stringify(authorwork);
+     formData.append("data",x);
+    //return axios.post(`http://localhost:9090/authors/uploadwork/${topicid}/${conferenceId}`,formData);
+
+    return axios.post(`http://localhost:3030/author/upload/${topicid}/${conferenceId}`,formData);
   };
 export const createConference=(conference)=>{
-   return axios.post('http://localhost:9090/conference/createConference',conference);
+   return axios.post('http://localhost:3030/conference/create',conference);
 };
 //get all conference between recent date
 export const listConferenceBtwDate=()=>{
@@ -34,8 +36,9 @@ export const listConferenceBtwDate=()=>{
 }
 // create track
 export const createTracks=(conferenceId,tracks)=>{
-  
-  return axios.post(`http://localhost:9090/track/createtrack/${conferenceId}`,tracks);
+  console.log(conferenceId);
+  //return axios.post(`http://localhost:9090/track/createtrack/${conferenceId}`,tracks);
+  return axios.put(`http://localhost:3030/conference/addtracks/${conferenceId}`,tracks);
 }
 //get all tracks
 export const getalltracks=(conferenceid)=>{
@@ -49,7 +52,8 @@ export const getallreviewersbytrack=(track_id)=>{
 
 // create topic
 export const createTopics=(trackId,topics)=>{
-  return axios.post(`http://localhost:9090/topic/createtopic/${trackId}`,topics);
+  //return axios.post(`http://localhost:9090/topic/createtopic/${trackId}`,topics);
+  return axios.put(`http://localhost:3030/conference/addtopics/${trackId}`,topics);
 }
 
 
@@ -62,7 +66,8 @@ export const createCommitteeMembers=(members,conference_id,committee_id)=>{
    return axios.post(`http://localhost:9090/user/createuser/${committee_id}/${conference_id}`,members);
 }
 export const createReviewers=(members,conference_id)=>{
-  return axios.post(`http://localhost:9090/Reviewer/createreviewer/${conference_id}`,members);
+  //return axios.post(`http://localhost:9090/Reviewer/createreviewer/${conference_id}`,members);
+  return axios.post(`http://localhost:3030/reviewer/create/${conference_id}`,members);
 }
 
 //fetch all users before recent date
@@ -86,20 +91,25 @@ export const createCommittee=(conferenceId,committee)=>{
 
 //create paper allotments
 export const createPaperallot=(informationdb)=>{
-  return axios.post(`http://localhost:9090/allotment/papersallot`,informationdb)
+ // return axios.post(`http://localhost:9090/allotment/papersallot`,informationdb)
+  return axios.post(`http://localhost:3030/paper/allotments`,informationdb) 
 }
 
 export const emailsend=(topic_id,date,name,designation)=>{
   const data={date,name,designation};
-  return axios.post(`http://localhost:9090/Email/send/${topic_id}`,data)
+  console.log(topic_id);
+  //return axios.post(`http://localhost:9090/Email/send/${topic_id}`,data)
+  return axios.post(`http://localhost:3030/paper/sendMails/${topic_id}`,data)
 }
 
 export const fetchreviewer=(reviewerId)=>{
-  return axios.get(`http://localhost:9090/Reviewer/getreviewerbyid/${reviewerId}`);
+  //return axios.get(`http://localhost:9090/Reviewer/getreviewerbyid/${reviewerId}`);
+  return axios.get(`http://localhost:3030/reviewer/fetchreviewerbyid/${reviewerId}`);
 }
 
 export const getAllConference=()=>{
-  return axios.get(`http://localhost:9090/conference/getAllConference`)
+  // return axios.get(`http://localhost:9090/conference/getAllConference`)
+  return axios.get(`http://localhost:3030/conference/getallconference`);
 }
 export const setConferenceToSession=(conference_id)=>{
   return axios.get(`http://localhost:9090/conference/setSessionData/${conference_id}`,{withCredentials:true});
@@ -115,12 +125,14 @@ export const getConferenceById=()=>{
    
     throw new Error('Conference ID not found in session storage.');
   }
-  return axios.get(`http://localhost:9090/conference/getConference/${conference_id}`)
+ // return axios.get(`http://localhost:9090/conference/getConference/${conference_id}`)
+  return axios.get(`http://localhost:3030/conference/getconferencebyid/${conference_id}`)
 }
 
 export const getpdf = (authorId) => {
   return new Promise((resolve, reject) => {
-    axios.get(`http://localhost:9090/pdf/${authorId}`, {
+    //http://localhost:9090/pdf/${authorId}
+    axios.get(`http://localhost:3030/paper/getpdf/${authorId}`, {
       responseType: 'arraybuffer',
     })
     .then((response) => {
@@ -136,5 +148,6 @@ export const getpdf = (authorId) => {
 };
 
 export const fetchauthorwork=(id)=>{
-return axios.get(`http://localhost:9090/authors/getauthorwork/${id}`);
+// return axios.get(`http://localhost:9090/authors/getauthorwork/${id}`);
+return axios.get(`http://localhost:3030/author/fetchpaperbyid/${id}`);
 }

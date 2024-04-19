@@ -76,33 +76,34 @@ const TrackCreation = () => {
     if (Object.keys(newErrors).length > 0) {
       return;
     }
+    console.log(tracks);
     // Form submission logic here
     //const tracksdata={conferenceId,tracks};
-    createTracks(conference.conference_id,tracks).then((Response)=>{
+    const newArray = tracks.map((item, index) => ({ track_name: item}));
+    const object = { tracks: newArray.map(item => ({ track_name: item.track_name })) };
+    console.log(object);
+    createTracks(conference._id,object).then((Response)=>{
       console.log(Response.data);
-      setCompletionMessage(Response.data);
-    //   setTimeout(() => {
-    //     navigate(-1); // Navigate back to previous page
-    //   }, 2000); // 2000 milliseconds = 2 seconds
-    // })
-    setConferenceName('');
+       //setCompletionMessage(Response.data);
+       alert(Response.data.message);
+      setConferenceName('');
     setSubject('');
     setTracks([]);
     setTrackInput('');
-    setTimeout(()=>{
-      // navigate(-1);
-      setCompletionMessage('');
+    // setTimeout(()=>{
+    //   // navigate(-1);
+    //   setCompletionMessage('');
 
-    },2000);
+    // },2000);
     }).catch((err)=>{
       console.log(err);
     })
-    console.log({
-      conferenceName,
-      subject,
-      tracks,
-      conferenceId
-    });
+    // console.log({
+    //   conferenceName,
+    //   subject,
+    //   tracks,
+    //   conferenceId
+    // });
 
     // Reset form fields after submission
    
@@ -123,7 +124,7 @@ const TrackCreation = () => {
     <div className="row justify-content-center">
       <div className="col-md-6">
       <p className="text-start conference-info">
-  <span style={{ fontSize: '18px', fontWeight: 'bold', color: 'teal' }}>Conference Name: {conference.conferences_title}</span>
+  <span style={{ fontSize: '18px', fontWeight: 'bold', color: 'teal' }}>Conference Name: {conference.conference_title}</span>
 </p>
         <div className="card">
           <div className="card-body">

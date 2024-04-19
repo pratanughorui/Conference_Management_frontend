@@ -11,13 +11,9 @@ const ReviewPaper2 = () => {
  // const [totalScore, setTotalScore] = useState(0);
   const [authorId, setAuthorId] = useState('');
   const [authorwork, setAuthorWork] = useState('');
-  
-//   if(window.location.search){
-//     const urlParams = new URLSearchParams(window.location.search);
-//     const reviewerId = urlParams.get('reviewerId');
-//     console.log(reviewerId);
-//     // Now you can use reviewerId to fetch reviewer-specific data and display it
-// }
+
+  const [reviewerId,setReviewerId]=useState('');
+
 const [questionAnswers, setQuestionAnswers] = useState([
   { qus: '1.Based on your assessment rather than on author statements, what is the new contribution of this paper?', ans: '' },
   { qus: '2.Does the contribution have good archival value, or is it only an incremental to existing knowledge?', ans: '' }
@@ -59,6 +55,7 @@ useEffect(()=>{
   if(window.location.search){
     const urlParams = new URLSearchParams(window.location.search);
     const reviewerId = urlParams.get('reviewerId');
+    setReviewerId(reviewerId);
     setAuthorId(urlParams.get('authorWorkId'));
     const authorid=urlParams.get('authorWorkId');
     console.log(reviewerId);
@@ -111,11 +108,7 @@ const fetchPdfOnClick = () => {
     // Set the current date when the component mounts
     setDateReviewed(getCurrentDate());
   }, []);
-  // const [grades, setGrades] = useState([Array(5).fill(null)]);
-  //   // const [criteriaInputs, setCriteriaInputs] = useState(Array(10).fill(''));
-  //   const [criteriaInputs, setCriteriaInputs] = useState(['']); // Initialize with one default input
-  //   const [additionalInputs, setAdditionalInputs] = useState(['']);
-  // State to store the selected recommendation
+  
   const [selectedRecommendation, setSelectedRecommendation] = useState("");
 
   // Function to handle recommendation selection
@@ -123,32 +116,7 @@ const fetchPdfOnClick = () => {
     setSelectedRecommendation(event.target.value);
   };
 
-    // Function to handle grade selection
-    // const handleGradeSelection = (index, grade) => {
-    //   const newGrades = [...grades];
-    //   newGrades[index] = grade;
-    //   setGrades(newGrades);
-    // };
-    // const addNewQuestion = () => {
-    //   if (newQuestionText.trim() !== '') {
-    //     // Adds the new question at the beginning of the list
-    //     setCustomQuestions([{ id: customQuestions.length + 1, text: newQuestionText }, ...customQuestions]);
-    //     setNewQuestionText(''); // Resets the input field
-    //   }
-    // };
-  
-    // const handleNewQuestionTextChange = (e) => {
-    //   setNewQuestionText(e.target.value);
-    // };
-    // const handleAnswerChange = (index, answer) => {
-    //   // Create a copy of the questionAnswers array
-    //   const updatedQuestionAnswers = [...questionAnswers];
-    //   // Update the answer of the specified question
-    //   updatedQuestionAnswers[index].answer = answer;
-    //   // Update the state with the modified questionAnswers array
-    //   setQuestionAnswers(updatedQuestionAnswers);
-    // };
-  
+
    
   //---------------------------------------------------------
   const [criteriaData, setCriteriaData] = useState([]);
@@ -195,82 +163,29 @@ const fetchPdfOnClick = () => {
     }, 0);
     return totalScore;
   };
-  //   const handleFormSubmit=(e)=>{
-  //     e.preventDefault();
-  //     // const data = {
-  //     //   // reviewerId: reviewer.reviewer_id, // Assuming `reviewer` is an object with a property `reviewer_id`
-  //     //   // authorId: authorId,               // Assuming `authorId` is already defined
-  //     //   // dateReviewed: dateReviewed,
-  //     //   // recommendation: selectedRecommendation,     // Assuming `dateReviewed` is already defined
-  //     //   // totalScore:calculateTotalScore()
-  //     //   qus:newQuestionText
-  //     // };
-    
-  //     // console.log(data);
-  //     const allQuestionsAndAnswers = [
-  //       { text: '1.Based on your assessment rather than on author statements, what is the new contribution of this paper?', answer: document.getElementById('contribution1').value },
-  //       { text: '2.Does the contribution have good archival value, or is it only an incremental to existing knowledge?', answer: document.getElementById('contribution2').value },
-  //       ...questionAnswers
-  //     ];
-  
-  //     // Do something with the array of questions and answers
-  //     console.log(allQuestionsAndAnswers);
 
-  //   // Do something with the array of questions and answers
-  //  // console.log(allQuestionsAndAnswers);
-  //   }
-  // const handleFormSubmit = (e) => {
-  //   e.preventDefault(); // Prevent default form submission behavior
-  
-  //   // Construct an array containing all questions and answers
-  //   const allQuestionsAndAnswers = [
-  //     { text: '1.Based on your assessment rather than on author statements, what is the new contribution of this paper?', answer: document.getElementById('contribution1').value },
-  //     { text: '2.Does the contribution have good archival value, or is it only an incremental to existing knowledge?', answer: document.getElementById('contribution2').value },
-  //     ...questionAnswers
-  //   ];
-  
-  //   // Do something with the array of questions and answers
-  //   console.log(allQuestionsAndAnswers);
-  // };
   const handleFormSubmit = (e) => {
     e.preventDefault(); // Prevent default form submission behavior
-
-    // Construct an array containing all criteria inputs and their corresponding grades and additional inputs
-   // Access all criteria data here in array form
-  // const allCriteriaData = criteriaData.map(criteria => ({
-  //   name: criteria.name,
-  //   grade: criteria.grades.find(grade => grade !== null),
-  //   additional: criteria.additional
-  // }));
-  // console.log(allCriteriaData); // You can do whatever you want with this array
-  const data={
-    reviewerId: reviewer.reviewer_id, // Assuming `reviewer` is an object with a property `reviewer_id`
-    paperId: authorId,               // Assuming `authorId` is already defined
-    reviewDate: dateReviewed,
-    acceptance: selectedRecommendation,     // Assuming `dateReviewed` is already defined
-          totalScore:calculateTotalScore()
-  }
   const allCriteriaData = criteriaData.map(criteria => ({
     max_grade: criteria.name || '', // Use empty string if name is not set
     score: criteria.grades.find(grade => grade !== null) || 0, // Use 0 if grade is not set
     min_grade: criteria.additional || '', // Use empty string if additional is not set
   }));
   
-  // const allQuestionsAndAnswers = [
-  //   { qus: '1.Based on your assessment rather than on author statements, what is the new contribution of this paper?', ans: document.getElementById('contribution1').value },
-  //   { qus: '2.Does the contribution have good archival value, or is it only an incremental to existing knowledge?', ans: document.getElementById('contribution2').value },
-  //   ...questionAnswers
-  // ];
-  console.log(questionAnswers);
-    const formData = new FormData();
-    const y = JSON.stringify(data);
-    const x = JSON.stringify(allCriteriaData);
-     formData.append("name",x);
-     formData.append("review",y);
-     formData.append("coauthor",JSON.stringify(questionAnswers));
-    axios.post(`http://localhost:9090/Reviewer/review`,formData).then((Response)=>{
+    const final={
+      reviewer_id:reviewerId,
+      authorwork_id: authorId,
+      review_date:dateReviewed,
+      acceptance:selectedRecommendation,
+      total_score:calculateTotalScore(),
+      qus_ans:questionAnswers,
+      gradding:allCriteriaData
+    }
+    console.log(final);
+    axios.post(`http://localhost:3030/reviewer/reviewsubmit`,final).then((Response)=>{
       console.log(Response.data);
-      alert(Response.data);
+      alert(Response.data.message);
+      window.location.reload();
 
     }).catch((err)=>{
       console.log(err);

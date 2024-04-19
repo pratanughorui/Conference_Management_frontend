@@ -17,6 +17,7 @@ const EmailFormation = () => {
   const [successMessage, setSuccessMessage] = useState('');
   useEffect(() => {
     setTracks(conference.tracks);
+    setDate(conference.last_date_review_sub);
   }, []);
   const handleTrackChange = (e) => {
     const ind = e.target.selectedIndex - 1;
@@ -76,7 +77,7 @@ const EmailFormation = () => {
                 >
                     <option value="">Select Topic</option>
                     {topics.map(con => (
-                        <option key={con.topic_id} value={con.topic_id}>{con.topic_name}</option>
+                        <option key={con._id} value={con._id}>{con.topic_name}</option>
                     ))}
                 </select>
             </div>
@@ -88,7 +89,7 @@ const EmailFormation = () => {
                 type="date"
                 className="form-control"
                 id="dueDate"
-                onChange={(e) => setDate(e.target.value)}
+                value={date}
               />
             </div>
             {/* The paragraph text remains unchanged */}

@@ -6,7 +6,7 @@ import { useLoaderData } from 'react-router-dom';
 const AuthorRegistration = () => {
   const data = useLoaderData();
   const conferenceList = data.data;
-  console.log(conferenceList);
+  //console.log(conferenceList);
   const [conference, setConference] = useState('');
   const [tracks, setTracks] = useState([]);
   const [topics, setTopics] = useState([]);
@@ -73,25 +73,37 @@ const AuthorRegistration = () => {
     if (Object.keys(newErrors).length > 0) {
       return;
     }
-    console.log("ff");
-    const authorwork = { name, affiliation, country, contactNumber, email,googlescId,orchidId, title, keywords, abstract, pdfFile };
-    console.log(authorwork);
+    const coAuthorsData = CoAuthors.map(coAuthor => ({
+      name: coAuthor.name,
+      affiliation: coAuthor.affiliation,
+      country: coAuthor.country,
+      contact_no: coAuthor.mobile, // Assuming mobile field is used for contact number
+      email: coAuthor.email
+    }));
+    //console.log("ff");
+    const authorWorkData = {
+      name,
+      affiliation,
+      country,
+      contact_no: contactNumber,
+      email,
+      google_sh_id: googlescId,
+      orcid_id: orchidId,
+      title,
+      keywords,
+      abstract,
+     // pdf: pdfFile, // Assuming pdfFile contains the file data
+      co_authors: coAuthorsData
+    };
+    //const authorwork = { name, affiliation, country, contactNumber, email,googlescId,orchidId, title, keywords, abstract, pdfFile };
+    console.log(pdfFile);
     
-    console.log(CoAuthors[0]);
-    createAuthorWork(authorwork, topicid, conference.conference_id,CoAuthors)
+    //console.log(CoAuthors[0]);
+    createAuthorWork(authorWorkData, topicid, conference._id,pdfFile)
       .then((Response) => {
-        setCompletionMessage('Registration completed successfully!');
-        setName('');
-        setAffiliation('');
-        setCountry('');
-        setContactNumber('');
-        setEmail('');
-        setTitle('');
-        setTrack('');
-        setTopicid('');
-        setKeywords('');
-        setAbstract('');
-        setPdfFile(null);
+        alert(Response.data.message);
+        // setCompletionMessage('Registration completed successfully!');
+        window.location.reload();
       })
       .catch(err => {
         console.log(err);
@@ -119,7 +131,7 @@ const AuthorRegistration = () => {
     const selectedConferenceId = event.target.value;
     //console.log(selectedConferenceId);
     const selectedConferenceData = conferenceList.find(
-      (conference) => conference.conference_id == selectedConferenceId
+      (conference) => conference._id == selectedConferenceId
     );
     //console.log(selectedConferenceData);
     setConference(selectedConferenceData);
@@ -153,8 +165,8 @@ const AuthorRegistration = () => {
                         <option key={index} value={con.track_id}>{con.track_name}</option>
                     ))} */}
                      {conferenceList.map((conferenceItem) => (
-              <option key={conferenceItem.conference_id} value={conferenceItem.conference_id}>
-                {conferenceItem.conferences_title}
+              <option key={conferenceItem._id} value={conferenceItem._id}>
+                {conferenceItem.conference_title}
               </option>
             ))}
                 </select>
@@ -337,7 +349,7 @@ const AuthorRegistration = () => {
                 >
                     <option value="">Select Topic</option>
                     {topics.map(con => (
-                        <option key={con.topic_id} value={con.topic_id}>{con.topic_name}</option>
+                        <option key={con._id} value={con._id}>{con.topic_name}</option>
                     ))}
                 </select>
                 <div className="invalid-feedback">{errors.topicid}</div>

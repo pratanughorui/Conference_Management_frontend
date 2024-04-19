@@ -6,7 +6,7 @@ const PaperAllotments = () => {
   //fetch conference data
   const data = useLoaderData();
   const conference = data.data;
- console.log(conference);
+ //console.log(conference);
  const [authors, setAuthors] = useState([]);
  const [revieres, setRevieres] = useState([]);
  const [tracks,setTracks]=useState([]);
@@ -37,7 +37,7 @@ useEffect(() => {
 }, [tracks]); // Dependency array ensures the effect runs whenever 'tracks' changes
 
 const handleTopicChange=(e)=>{
-  setAuthors(topics[e.target.selectedIndex-1].authors);
+  setAuthors(topics[e.target.selectedIndex-1].author_works);
  // console.log(topics[e.target.selectedIndex-1].authors);
 }
 
@@ -67,7 +67,7 @@ const fetchreviewers=(e)=>{
       // console.log(revieres[reviewer-1].reviewer_id);
     // e.preventDefault();
     //-------------for back
-     let authors_work=authorWork.author_id;
+     let authors_work=authorWork._id;
      let reviewer2=reviewerId;
      //-------------for front
      const fat=authorWork.title;
@@ -116,21 +116,28 @@ const removeinfo=(index)=>{
 
 const submitpaperallotment=()=>{
  
-console.log(informationsfordb);
-if(informationsfordb){
-  createPaperallot(informationsfordb).then((response)=>{
+
+const outputData = informationsfordb.map(item => ({
+  "reviewer_id": item.reviewer2,
+  "authorwork_id": item.authors_work
+}));
+console.log(outputData);
+if(outputData){
+  createPaperallot(outputData).then((response)=>{
+    alert(response.data.message);
     setInformationsfordb([]);
     setInformations([]);
-    setCompletionMessage(response.data);
-      setTimeout(()=>{
-        setCompletionMessage('');
-      },3000)
+    setAuthors([]);
+    // setCompletionMessage(response.data);
+    //   setTimeout(()=>{
+    //     setCompletionMessage('');
+    //   },3000)
     
   }).catch((err)=>{
-    setErrorMessage(err);
-    setTimeout(()=>{
-      setErrorMessage('');
-    },3000)
+    // setErrorMessage(err);
+    // setTimeout(()=>{
+    //   setErrorMessage('');
+    // },3000)
   })
 }
 
@@ -138,7 +145,7 @@ if(informationsfordb){
   return (
     <div className="container mt-5">
      <p className="text-start conference-info">
-  <span style={{ fontSize: '18px', fontWeight: 'bold', color: 'teal' }}>Conference Name: {conference.conferences_title}</span>
+  <span style={{ fontSize: '18px', fontWeight: 'bold', color: 'teal' }}>Conference Name: {conference.conference_title}</span>
 </p>
       <div className="row">
         {/* Left side - Paper Allotment Form */}
@@ -160,7 +167,7 @@ if(informationsfordb){
                     
                   {
     tracks.map((con, index) => (
-        <option key={index} value={con.track_id}>{con.track_name}</option>
+        <option key={index} value={con._id}>{con.track_name}</option>
     ))
 }
                   </select>
@@ -178,7 +185,7 @@ if(informationsfordb){
                     <option value="">Select Reviewers</option>
                     {
                   revieres.map((member,index)=>(
-                    <option key={index} value={`${member.reviewer_id},${member.name}`}>{member.name}</option>
+                    <option key={index} value={`${member._id},${member.name}`}>{member.name}</option>
 
                   ))
                 }
@@ -294,7 +301,7 @@ if(informationsfordb){
 
                       <td>{member.name}</td>
                       <td>{member.title}</td>
-                      <td>{member.pdf_name}</td>
+                      <td>{member.pdf}</td>
                     </tr>
 
                   ))

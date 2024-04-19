@@ -8,7 +8,7 @@ import { Axios } from 'axios';
 
 function Conference_Root() {
   const data = useLoaderData();
-  const conference = data.data;
+  const conference = data.data || []; // Ensure conference is an array, if data is undefined or null
   const [selectedConferenceId, setSelectedConferenceId] = useState('');
 
   const linkStyle = {
@@ -53,8 +53,8 @@ function Conference_Root() {
           <Form.Select aria-label="Select conference" value={selectedConferenceId} onChange={(e) => setSelectedConferenceId(e.target.value)}>
             <option value="">Select conference</option>
             {conference.map((conferenceItem) => (
-              <option key={conferenceItem.conference_id} value={conferenceItem.conference_id}>
-                {conferenceItem.conferences_title}
+              <option key={conferenceItem._id} value={conferenceItem._id}>
+                {conferenceItem.conference_title}
               </option>
             ))}
           </Form.Select>
@@ -65,8 +65,8 @@ function Conference_Root() {
       </Row>
     </Form>
             <br />
-            <Link to={"/committee-registration"} style={linkStyle}><ListGroup.Item>Committee</ListGroup.Item></Link><br />
-            <Link to={"/committee-members-registration"} style={linkStyle}><ListGroup.Item>Members</ListGroup.Item></Link><br />
+            {/* <Link to={"/committee-registration"} style={linkStyle}><ListGroup.Item>Committee</ListGroup.Item></Link><br />
+            <Link to={"/committee-members-registration"} style={linkStyle}><ListGroup.Item>Members</ListGroup.Item></Link><br /> */}
             <Link to={"/track-creation"} style={linkStyle}><ListGroup.Item>Track</ListGroup.Item></Link><br />
             <Link to={"/topic-creation"} style={linkStyle}><ListGroup.Item>Topics</ListGroup.Item></Link><br />
             <Link to={"/reviewers-registration"} style={linkStyle}><ListGroup.Item>Reviewers</ListGroup.Item></Link><br />
