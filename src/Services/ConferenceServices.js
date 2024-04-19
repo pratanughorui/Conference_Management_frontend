@@ -1,5 +1,5 @@
 import axios from "axios";
-const REST_API_BASE_URL="http://localhost:9090/conference/getAllConference";
+const REST_API_BASE_URL="https://conference-management-backend-withnode-1.onrender.com";
 export const listConference=()=>axios.get(REST_API_BASE_URL);  
 //create authors
 export const createAuthorWork = (authorwork,topicid,conferenceId,pdffile) => {
@@ -126,7 +126,7 @@ export const getConferenceById=()=>{
     throw new Error('Conference ID not found in session storage.');
   }
  // return axios.get(`http://localhost:9090/conference/getConference/${conference_id}`)
-  return axios.get(`http://localhost:3030/conference/getconferencebyid/${conference_id}`)
+  return axios.get(`${REST_API_BASE_URL}/conference/getconferencebyid/${conference_id}`)
 }
 
 export const getpdf = (authorId) => {
