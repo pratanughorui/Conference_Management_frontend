@@ -109,7 +109,7 @@ export const fetchreviewer=(reviewerId)=>{
 
 export const getAllConference=()=>{
   // return axios.get(`http://localhost:9090/conference/getAllConference`)
-  return axios.get(`http://localhost:3030/conference/getallconference`);
+  return axios.get(`https://conference-management-backend-withnode-1.onrender.com/conference/getallconference`);
 }
 export const setConferenceToSession=(conference_id)=>{
   return axios.get(`http://localhost:9090/conference/setSessionData/${conference_id}`,{withCredentials:true});
