@@ -111,7 +111,7 @@ const ConferenceCreation = () => {
       <div className="col-md-8">
         <div className="card">
           <div className="card-body">
-            <h3 className="card-title text-center mb-4">Create Conference</h3>
+            <h3 className="card-title text-center mb-4">Create </h3>
             {completionMessage && (
                 <div className="alert alert-success" role="alert">
                   {completionMessage}
