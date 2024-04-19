@@ -70,6 +70,7 @@ function Conference_Root() {
             <Link to={"/track-creation"} style={linkStyle}><ListGroup.Item>Track</ListGroup.Item></Link><br />
             <Link to={"/topic-creation"} style={linkStyle}><ListGroup.Item>Topics</ListGroup.Item></Link><br />
             <Link to={"/reviewers-registration"} style={linkStyle}><ListGroup.Item>Reviewers</ListGroup.Item></Link><br />
+            <Link to={"/author-registration"} style={linkStyle}><ListGroup.Item>Authors Registration</ListGroup.Item></Link><br />
           </ListGroup>
         </Col>
       </Row>
