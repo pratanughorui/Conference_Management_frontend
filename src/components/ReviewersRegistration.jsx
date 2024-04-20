@@ -158,7 +158,7 @@ console.log(transformedData);
     
   }).catch((err)=>{
       console.log(err);
-    alert(err.response.data.message);
+    alert(err.response.data.error);
     // setErrorMessage(err.response.data.message);
     // setTimeout(()=>{
     //   setErrorMessage('');
