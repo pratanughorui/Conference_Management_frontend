@@ -22,6 +22,7 @@ import AuthorReport2 from './components/AuthorReport2.jsx'
 import Reports_root from './components/Reports_Root.jsx'
 import ErrorPopup from './components/ErrorPopup.jsx'
 import ReviewPaper2 from './components/ReviewPaper2.jsx'
+import { gellAllreviewersbyconid } from './Services/ConferenceServices'
 // const router=createBrowserRouter(
 //   createRoutesFromElements(
 //       <Route path='/' element={<Login/>}></Route>,
@@ -100,7 +101,7 @@ const router=createBrowserRouter([
       },{
         path:'reviewer-info',
         element:<ReviewerInformationTable/>,
-        loader:getConferenceById,
+        loader:gellAllreviewersbyconid,
         errorElement:<ErrorPopup message="Select conference first."   />
       },{
         path:'member-info',
