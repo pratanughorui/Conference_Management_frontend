@@ -188,6 +188,7 @@ console.log(e.target.value);
                      className={"form-select mb-3"}
                      value={trackid}
                      onChange={(e)=>{setTrackid(e.target.value)}}
+                    className={`form-control ${errors.trackid ? 'is-invalid' : ''}`}
                   >
                     <option value="">Select Track</option>
                     
