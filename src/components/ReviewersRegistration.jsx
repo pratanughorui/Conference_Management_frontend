@@ -157,7 +157,7 @@ console.log(transformedData);
     //  },2000)
     
   }).catch((err)=>{
-    console.log(err);
+    alert(err.response.data.message);
     // setErrorMessage(err.response.data.message);
     // setTimeout(()=>{
     //   setErrorMessage('');
