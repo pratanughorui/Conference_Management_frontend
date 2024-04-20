@@ -96,6 +96,14 @@ export const createCommittee=(conferenceId,committee)=>{
   //return axios.post(`http://localhost:9090/committee/createcommittee/${conferenceId}`,committee)
   return axios.post(`${REST_API_BASE_URL}/committee/createcommittee/${conferenceId}`,committee)
 }
+export const gellAllreviewersbyconid=()=>{
+  const conference_id=sessionStorage.getItem('con');
+  if (!conference_id) {
+   
+    throw new Error('Conference ID not found in session storage.');
+  }
+  return axios.get(`${REST_API_BASE_URL}/reviewer/allreviewersbyconid/${conference_id}`)
+};
 
 //create paper allotments
 export const createPaperallot=(informationdb)=>{
