@@ -25,6 +25,7 @@ const [errors, setErrors] = useState({
   mobile: '',
   email: '',
   password: '',
+    trackid:''
 });
 
 
@@ -47,6 +48,7 @@ const handleSubmit=(e)=>{
       if (!mobile) newErrors.mobile = 'Contact number is required.';
       if (!email) newErrors.email = 'Email is required.';
       if (!password) newErrors.password = 'Password is required.';
+      if(!trackid) newErrors.trackid='track is required';
       setErrors(newErrors);
       // If there are any errors, stop form submission
       if (Object.keys(newErrors).length > 0) {
@@ -195,7 +197,7 @@ console.log(e.target.value);
                        )
                   }
                   </select>
-                {/* <div className="invalid-feedback">{errors.conferenceName}</div> */}
+                <div className="invalid-feedback">{errors.trackid}</div>
               </div>
                   </div>
                  </div>
