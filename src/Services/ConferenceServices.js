@@ -82,7 +82,14 @@ export const gellAllAuthors=(conference_id)=>{
 export const gellAllReviewers=(conference_id)=>{
   return axios.get(`http://localhost:9090/Reviewer/getallreviwers/${conference_id}`);
 }
-export const gellAllreviewersBeforDate=()=>axios.get('http://localhost:9090/Reviewer/getallreviewersbeforerecentdate');
+export const gellAllreviewersBeforDate=()=>{
+  const conference_id=sessionStorage.getItem('con');
+  if (!conference_id) {
+   
+    throw new Error('Conference ID not found in session storage.');
+  }
+  return axios.get(`https://conference-management-backend-withnode-1.onrender.com/reviewer/allreviewersexcurr/${conference_id}`)
+};
 
 //create committee
 export const createCommittee=(conferenceId,committee)=>{
