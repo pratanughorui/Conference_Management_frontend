@@ -79,12 +79,12 @@ useEffect(()=>{
 // },[]);
 const fetchPdfOnClick = () => {
   getpdf(authorId)
-    .then((url) => {
-      setPdfUrl(url);
-    })
-    .catch((error) => {
-      console.error('Error fetching PDF:', error);
-    });
+      .then((url) => {
+        setPdfUrl(url);
+      })
+      .catch((error) => {
+        console.error('Error fetching PDF:', error);
+      });
 };
   useEffect(() => {
     // Function to get current date in YYYY-MM-DD format
@@ -193,19 +193,19 @@ const fetchPdfOnClick = () => {
   };
   return (
     <div className="container mt-5">
-       <div className="mt-5">
-        <button className="btn btn-primary" onClick={fetchPdfOnClick}>
-          View PDF
-        </button>
-        {pdfUrl && (
-          <div className="mt-3">
-            <embed src={pdfUrl} type="application/pdf" width="100%" height="600px" />
-            <a href={pdfUrl} download="filename.pdf" className="btn btn-secondary mt-3">
-              Download PDF
-            </a>
-          </div>
-        )}
-      </div>
+      <div className="mt-5">
+      <button className="btn btn-primary" onClick={fetchPdfOnClick}>
+        View PDF
+      </button>
+      {pdfUrl && (
+        <div className="mt-3">
+          <embed src={pdfUrl} type="application/pdf" width="100%" height="600px" />
+          <a href={pdfUrl} download="filename.pdf" className="btn btn-secondary mt-3">
+            Download PDF
+          </a>
+        </div>
+      )}
+    </div>
       <div className="card">
         <div className="card-header bg-primary text-white">
           Paper Review Form

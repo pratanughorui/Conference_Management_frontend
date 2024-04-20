@@ -42,15 +42,13 @@ function CommitteeRegistration() {
            setErrors("aaa");
             return;
         }
-        createCommittee(conference.conference_id,tracks).then((r)=>{
-          console.log(r.data);
-          setCompletionMessage(r.data);
-          setTracks([]);
-          setTimeout(()=>{
-            // navigate(-1);
-            setCompletionMessage('');
-      
-          },2000);
+        const com={
+          committees:tracks
+        }
+        console.log(com);
+        createCommittee(conference._id,com).then((r)=>{
+          alert(r.data.message);
+          window.location.reload();
         }).catch((err)=>{
             console.log(err);
         })
@@ -65,7 +63,7 @@ function CommitteeRegistration() {
     <div className="row justify-content-center">
       <div className="col-md-6">
       <p className="text-start conference-info">
-  <span style={{ fontSize: '18px', fontWeight: 'bold', color: 'teal' }}>Conference Name: {conference.conferences_title}</span>
+  <span style={{ fontSize: '18px', fontWeight: 'bold', color: 'teal' }}>Conference Name: {conference.conference_title}</span>
 </p>
         <div className="card">
           <div className="card-body">

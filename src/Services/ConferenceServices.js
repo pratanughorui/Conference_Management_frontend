@@ -28,7 +28,7 @@ export const createAuthorWork = (authorwork,topicid,conferenceId,pdffile) => {
     return axios.post(`${REST_API_BASE_URL}/author/upload/${topicid}/${conferenceId}`,formData);
   };
 export const createConference=(conference)=>{
-   return axios.post('${REST_API_BASE_URL}/conference/create',conference);
+   return axios.post(`${REST_API_BASE_URL}/conference/create`,conference);
 };
 //get all conference between recent date
 export const listConferenceBtwDate=()=>{
@@ -86,7 +86,8 @@ export const gellAllreviewersBeforDate=()=>axios.get('http://localhost:9090/Revi
 
 //create committee
 export const createCommittee=(conferenceId,committee)=>{
-  return axios.post(`http://localhost:9090/committee/createcommittee/${conferenceId}`,committee)
+  //return axios.post(`http://localhost:9090/committee/createcommittee/${conferenceId}`,committee)
+  return axios.post(`${REST_API_BASE_URL}/committee/createcommittee/${conferenceId}`,committee)
 }
 
 //create paper allotments
@@ -131,19 +132,15 @@ export const getConferenceById=()=>{
 
 export const getpdf = (authorId) => {
   return new Promise((resolve, reject) => {
-    //http://localhost:9090/pdf/${authorId}
-    axios.get(`${REST_API_BASE_URL}/paper/getpdf/${authorId}`, {
-      responseType: 'arraybuffer',
-    })
-    .then((response) => {
-      const pdfBlob = new Blob([response.data], { type: 'application/pdf' });
-      const url = URL.createObjectURL(pdfBlob);
-      resolve(url);
-    })
-    .catch((error) => {
-      console.error('Error fetching PDF:', error);
-      reject(error);
-    });
+    axios.get(`${REST_API_BASE_URL}/paper/getpdf/${authorId}`)
+      .then((response) => {
+        const pdfUrl = response.data.pdfUrl; // Assuming your backend returns the PDF URL in the response
+        resolve(pdfUrl);
+      })
+      .catch((error) => {
+        console.error('Error fetching PDF:', error);
+        reject(error);
+      });
   });
 };
 
