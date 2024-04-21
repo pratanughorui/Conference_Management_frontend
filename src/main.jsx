@@ -122,7 +122,7 @@ const router=createBrowserRouter([
         element:<Reports_root/>,
         loader:getAllConference
       },{
-        path:'',
+        path:'/create-conference',
         element:<ConferenceCreation/>
       }
     ]

@@ -8,7 +8,7 @@ const Header = () => {
   return (
     <Nav fill variant="tabs" defaultActiveKey="/home">
     <Nav.Item>
-      <Link to="" className="nav-link">Create Conference</Link>
+      <Link to={"create-conference"} className="nav-link">Create Conference</Link>
     </Nav.Item>
     <Nav.Item>
       <Link to={"select-conference"} className="nav-link">Select Conference</Link>
