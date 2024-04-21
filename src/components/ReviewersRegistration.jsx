@@ -25,6 +25,7 @@ const [errors, setErrors] = useState({
   mobile: '',
   email: '',
   password: '',
+    trackid:''
 });
 
 
@@ -47,6 +48,7 @@ const handleSubmit=(e)=>{
       if (!mobile) newErrors.mobile = 'Contact number is required.';
       if (!email) newErrors.email = 'Email is required.';
       if (!password) newErrors.password = 'Password is required.';
+      if(!trackid) newErrors.trackid='track is required';
       setErrors(newErrors);
       // If there are any errors, stop form submission
       if (Object.keys(newErrors).length > 0) {
@@ -155,7 +157,8 @@ console.log(transformedData);
     //  },2000)
     
   }).catch((err)=>{
-    console.log(err);
+      console.log(err);
+    alert(err.response.data.error);
     // setErrorMessage(err.response.data.message);
     // setTimeout(()=>{
     //   setErrorMessage('');
@@ -186,6 +189,7 @@ console.log(e.target.value);
                      className={"form-select mb-3"}
                      value={trackid}
                      onChange={(e)=>{setTrackid(e.target.value)}}
+                    className={`form-control ${errors.trackid ? 'is-invalid' : ''}`}
                   >
                     <option value="">Select Track</option>
                     
@@ -195,7 +199,7 @@ console.log(e.target.value);
                        )
                   }
                   </select>
-                {/* <div className="invalid-feedback">{errors.conferenceName}</div> */}
+                <div className="invalid-feedback">{errors.trackid}</div>
               </div>
                   </div>
                  </div>

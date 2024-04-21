@@ -83,27 +83,21 @@ export const gellAllAuthors=(conference_id)=>{
 export const gellAllReviewers=(conference_id)=>{
   return axios.get(`http://localhost:9090/Reviewer/getallreviwers/${conference_id}`);
 }
-export const gellAllreviewersBeforDate=()=>{
-  const conference_id=sessionStorage.getItem('con');
-  if (!conference_id) {
-   
-    throw new Error('Conference ID not found in session storage.');
-  }
-  return axios.get(`http://localhost:3030/reviewer/allreviewersexcurr/${conference_id}`)
-};
+export const gellAllreviewersBeforDate=()=>axios.get('http://localhost:9090/Reviewer/getallreviewersbeforerecentdate');
+
+//create committee
+export const createCommittee=(conferenceId,committee)=>{
+  //return axios.post(`http://localhost:9090/committee/createcommittee/${conferenceId}`,committee)
+  return axios.post(`${REST_API_BASE_URL}/committee/createcommittee/${conferenceId}`,committee)
+}
 export const gellAllreviewersbyconid=()=>{
   const conference_id=sessionStorage.getItem('con');
   if (!conference_id) {
    
     throw new Error('Conference ID not found in session storage.');
   }
-  return axios.get(`http://localhost:3030/reviewer/allreviewersbyconid/${conference_id}`)
+  return axios.get(`${REST_API_BASE_URL}/reviewer/allreviewersbyconid/${conference_id}`)
 };
-//create committee
-export const createCommittee=(conferenceId,committee)=>{
-  //return axios.post(`http://localhost:9090/committee/createcommittee/${conferenceId}`,committee)
-  return axios.post(`${REST_API_BASE_URL}/committee/createcommittee/${conferenceId}`,committee)
-}
 
 //create paper allotments
 export const createPaperallot=(informationdb)=>{
