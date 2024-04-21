@@ -39,7 +39,7 @@ export const listConferenceBtwDate=()=>{
 export const createTracks=(conferenceId,tracks)=>{
   console.log(conferenceId);
   //return axios.post(`http://localhost:9090/track/createtrack/${conferenceId}`,tracks);
-  return axios.put(`${REST_API_BASE_URL}/conference/addtracks/${conferenceId}`,tracks);
+  return axios.put(`${REST_API_BASE_URL}/track/addtracks/${conferenceId}`,tracks);
 }
 //get all tracks
 export const getalltracks=(conferenceid)=>{
@@ -54,7 +54,7 @@ export const getallreviewersbytrack=(track_id)=>{
 // create topic
 export const createTopics=(trackId,topics)=>{
   //return axios.post(`http://localhost:9090/topic/createtopic/${trackId}`,topics);
-  return axios.put(`${REST_API_BASE_URL}/conference/addtopics/${trackId}`,topics);
+  return axios.put(`${REST_API_BASE_URL}/topic/addtopics/${trackId}`,topics);
 }
 
 
@@ -63,8 +63,8 @@ export const gellAllRoles=()=>axios.get('http://localhost:9090/role/getallrole')
 
 //create committee members
 
-export const createCommitteeMembers=(members,conference_id,committee_id)=>{
-   return axios.post(`http://localhost:9090/user/createuser/${committee_id}/${conference_id}`,members);
+export const createCommitteeMembers=(members,committee_id)=>{
+   return axios.post(`${REST_API_BASE_URL}/member/create/${committee_id}`,members);
 }
 export const createReviewers=(members,conference_id)=>{
   //return axios.post(`http://localhost:9090/Reviewer/createreviewer/${conference_id}`,members);
@@ -83,7 +83,14 @@ export const gellAllAuthors=(conference_id)=>{
 export const gellAllReviewers=(conference_id)=>{
   return axios.get(`http://localhost:9090/Reviewer/getallreviwers/${conference_id}`);
 }
-export const gellAllreviewersBeforDate=()=>axios.get('http://localhost:9090/Reviewer/getallreviewersbeforerecentdate');
+export const gellAllreviewersBeforDate=()=>{
+  const conference_id=sessionStorage.getItem('con');
+  if (!conference_id) {
+   
+    throw new Error('Conference ID not found in session storage.');
+  }
+  return axios.get(`https://conference-management-backend-withnode-1.onrender.com/reviewer/allreviewersexcurr/${conference_id}`)
+};
 
 //create committee
 export const createCommittee=(conferenceId,committee)=>{

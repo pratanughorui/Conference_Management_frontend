@@ -38,7 +38,7 @@ const ReviewerInformationTable = ({ reviewers }) => {
                   <tr key={`${index}-${subIndex}`}>
                     {/* Access individual properties of each reviewer */}
                     <td>{reviewer.name}</td>
-                    <td>{reviewer.affliation}</td>
+                    <td>{reviewer.affiliation}</td>
                     <td>{reviewer.country}</td>
                     <td>{reviewer.email}</td>
                     <td>{reviewer.mobile}</td>

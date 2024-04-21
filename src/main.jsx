@@ -101,7 +101,7 @@ const router=createBrowserRouter([
       },{
         path:'reviewer-info',
         element:<ReviewerInformationTable/>,
-        loader:gellAllreviewersbyconid,
+        loader:getConferenceById,
         errorElement:<ErrorPopup message="Select conference first."   />
       },{
         path:'member-info',
@@ -119,7 +119,8 @@ const router=createBrowserRouter([
         element:<ReviewPaper/>
       },{
         path:'/reports',
-        element:<Reports_root/>
+        element:<Reports_root/>,
+        loader:getAllConference
       },{
         path:'',
         element:<ConferenceCreation/>

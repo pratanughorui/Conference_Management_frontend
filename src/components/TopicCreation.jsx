@@ -6,6 +6,7 @@ function TopicCreation() {
   const data = useLoaderData();
   const conference = data.data;
   const [topics, setTopics] = useState([]);
+  const [existtopics, setExistTopics] = useState([]);
   const [tracks, setTracks] = useState([]);
   const [trackId, setTrackId] = useState('');
   const [topicInput, setTopicInput] = useState('');
@@ -63,6 +64,13 @@ function TopicCreation() {
   const handleTrackChange = (e) => {
     const selectedTrackId = e.target.value;
     setTrackId(selectedTrackId);
+    const selectedTrack = tracks.find(track => track._id === selectedTrackId);
+    if (selectedTrack) {
+      setExistTopics(selectedTrack.topics || []);
+      //console.log(existtopics);
+    } else {
+      setExistTopics([]);
+    }
   };
 
   return (
@@ -136,6 +144,22 @@ function TopicCreation() {
               </div>
             </div>
           </div>
+          <div className="col-md-6">
+                    <table className="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Topics</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {existtopics.map((topic, index) => (
+                                <tr key={index}>
+                                    <td>{topic.topic_name}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
         </div>
       </div>
     </div>

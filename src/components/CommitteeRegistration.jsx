@@ -6,14 +6,20 @@ import { useNavigate } from 'react-router-dom';
 function CommitteeRegistration() {
     const data=useLoaderData();
     const conference=data.data;
+    console.log(conference)
     const navigate = useNavigate();
     const [conferenceId, setConferenceId] = useState('');
+    const [committee,setCommittee]=useState([]);
+    const [members,setMembers]=useState([]);
   
     useEffect(() => {
       if (!conference || Object.keys(conference).length === 0) {
         // If conference data is empty, show popup or navigate back
         alert('Conference data is empty. Please go back and select a conference.');
         navigate("/"); // Navigate back to previous page
+      }else{
+         setCommittee(conference.committee);
+         setMembers(conference.committee.members);
       }
     }, [conference, navigate]);
 
@@ -21,6 +27,7 @@ function CommitteeRegistration() {
     const [trackInput, setTrackInput] = useState('');
     const [completionMessage, setCompletionMessage] = useState('');
     const [errors, setErrors] = useState('');
+    
   
     const handleAddTrack = () => {
       if (trackInput.trim() !== '') {
@@ -144,6 +151,25 @@ function CommitteeRegistration() {
           </div>
         </div>
       </div>
+      <div className="col-md-6">
+                    <table className="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Committee</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {committee.map((com, index) => (
+                                <tr key={index}>
+                                    <td>{com.committee_name}</td>
+                                </tr>
+                            ))}
+                            {/* <tr>
+                              <td>ddd</td>
+                            </tr> */}
+                        </tbody>
+                    </table>
+                </div>
     </div>
   </div>
   </div>

@@ -8,6 +8,13 @@ const TrackCreation = () => {
  
   const navigate = useNavigate();
   const [conferenceId, setConferenceId] = useState('');
+  const[existTrack,setExistTrack]=useState([]);
+
+  useEffect(() => {
+    
+       setExistTrack(conference.tracks);
+    
+  }, []);
   //const [conference,setConference]=useState('');
   // useEffect(()=>{
   //   fetchData();
@@ -76,7 +83,7 @@ const TrackCreation = () => {
     if (Object.keys(newErrors).length > 0) {
       return;
     }
-    console.log(tracks);
+    //console.log(tracks);
     // Form submission logic here
     //const tracksdata={conferenceId,tracks};
     const newArray = tracks.map((item, index) => ({ track_name: item}));
@@ -86,10 +93,10 @@ const TrackCreation = () => {
       console.log(Response.data);
        //setCompletionMessage(Response.data);
        alert(Response.data.message);
-      setConferenceName('');
-    setSubject('');
-    setTracks([]);
-    setTrackInput('');
+       window.location.reload();
+    // setSubject('');
+    // setTracks([]);
+    // setTrackInput('');
     // setTimeout(()=>{
     //   // navigate(-1);
     //   setCompletionMessage('');
@@ -205,6 +212,25 @@ const TrackCreation = () => {
           </div>
         </div>
       </div>
+      <div className="col-md-6">
+                    <table className="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Tracks</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {existTrack.map((track, index) => (
+                                <tr key={index}>
+                                    <td>{track.track_name}</td>
+                                </tr>
+                            ))}
+                            {/* <tr>
+                              <td>test</td>
+                            </tr> */}
+                        </tbody>
+                    </table>
+                </div>
     </div>
   </div>
   </div>

@@ -9,6 +9,7 @@ const ReviewersRegistration=()=> {
     const [completionMessage, setCompletionMessage] = useState(''); 
     const [errorMessage,setErrorMessage]=useState('');
     const[newmembers,setNewmembers]=useState([]);
+    const[existreviewers,setExistreviewers]=useState([]);
 const [name, setName] = useState('');
 const [trackid, setTrackid] = useState('');
 const [affiliation, setAffiliation] = useState('');
@@ -18,7 +19,7 @@ const [mobile, setMobile] = useState('');
 const [email, setEmail] = useState('');
 const [errors, setErrors] = useState({
   name: '',
-  address: '',
+  affiliation: '',
   place: '',
   state: '',
   country: '',
@@ -147,14 +148,7 @@ const finalsave=(e)=>{
 console.log(transformedData);
   createReviewers(transformedData,trackid).then((Response)=>{
     alert(Response.data.message);
-    //console.log(Response.data);
-    // setCompletionMessage(Response.data);
-    clearnewmembersTable();
-    clearFields();
-    // count=0;
-    // setTimeout(()=>{
-    //   setCompletionMessage('');
-    //  },2000)
+    window.location.reload();
     
   }).catch((err)=>{
       console.log(err);
@@ -170,10 +164,18 @@ const clearoldmembersTable=()=>{
   setOldmembers([]);
 }
 const handleTrackChange=(e)=>{
-// const track=tracks.find(con=>con.track_name===e.target.value);
-// track_id=track.track_id
-console.log(e.target.value);
+  const selectedTrackId = e.target.value;
+setTrackid(selectedTrackId );
+const selectedTrack = tracks.find(track => track._id === selectedTrackId);
+if (selectedTrack) {
+  setExistreviewers(selectedTrack.reviewers || []);
+  //console.log(existtopics);
+  //console.log(existreviewers);
+} else {
+  setExistreviewers([]);
 }
+}
+
   return (
     <div className="container mt-5">
             <div className="row">
@@ -186,9 +188,9 @@ console.log(e.target.value);
                   <div className="mb-3">
                   <h2>Track</h2>
                 <select
-                     className={"form-select mb-3"}
+                    //  className={"form-select mb-3"}
                      value={trackid}
-                     onChange={(e)=>{setTrackid(e.target.value)}}
+                     onChange={handleTrackChange}
                     className={`form-control ${errors.trackid ? 'is-invalid' : ''}`}
                   >
                     <option value="">Select Track</option>
@@ -216,9 +218,9 @@ console.log(e.target.value);
           </div>
         {/* --------------------------------- */}
           <div className="mb-3">
-            <label htmlFor="address" className="form-label">Affiliation:</label>
-            <input type="text" className={`form-control ${errors.address ? 'is-invalid' : ''}`} id="address" value={affiliation} onChange={(e) => setAffiliation(e.target.value)} />
-            <div className="invalid-feedback">{errors.address}</div>
+            <label htmlFor="affiliation" className="form-label">Affiliation:</label>
+            <input type="text" className={`form-control ${errors.affiliation ? 'is-invalid' : ''}`} id="affiliation" value={affiliation} onChange={(e) => setAffiliation(e.target.value)} />
+            <div className="invalid-feedback">{errors.affiliation}</div>
           </div>
           
           {/* <div className="mb-3">
@@ -282,8 +284,9 @@ console.log(e.target.value);
           <tbody>
             {oldmembers.map((member, index) => (
               <tr key={index} onClick={() => populateMemberForm(member)}>
-                <td>{member.email}</td>
                 <td>{member.name}</td>
+                <td>{member.email}</td>
+                
               </tr>
             ))}
           </tbody>
@@ -320,6 +323,12 @@ console.log(e.target.value);
           </tr>
         </thead>
         <tbody>
+        {existreviewers.map((reviewer, index) => (
+                                <tr key={index}>
+                                    <td>{reviewer.name}</td>
+                                    <td>{reviewer.email}</td>
+                                </tr>
+                            ))}
             {newmembers.map((member, index) => (
               <tr key={index} onClick={() => populateMemberForm(member)}>
                 <td>{member.name}</td>

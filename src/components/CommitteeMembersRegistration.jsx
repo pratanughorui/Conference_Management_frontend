@@ -14,6 +14,7 @@ const CommitteeMembersRegistration = () => {
   const[committee,setCommittee]=useState([]);
   const[committeeId,setCommitteeId]=useState('');
   const[committeeName,setCommitteeName]=useState('');
+  const [existmembers,setExistMembers]=useState([]);
   const navigate = useNavigate();
   useEffect(() => {
     if (!conference || Object.keys(conference).length === 0) {
@@ -22,14 +23,16 @@ const CommitteeMembersRegistration = () => {
       navigate("/"); // Navigate back to previous page
     }
   }, [conference, navigate]);
-  useEffect(()=>{
-   //fetchconference();
-   fetchRoles();
-  },[]);
+  // useEffect(()=>{
+  //  //fetchconference();
+  //  fetchRoles();
+  // },[]);
 
   useEffect(()=>{
     if(conference){
-      setCommittee(conference.committees);
+      setCommittee(conference.committee);
+      
+      //setExistMembers(conference.committee.members);
     }
   },[conference]);
   //  const fetchconference = () => {
@@ -40,13 +43,13 @@ const CommitteeMembersRegistration = () => {
   //       console.log(err);
   //    })
   //  };
-   const fetchRoles=()=>{
-    gellAllRoles().then((Response)=>{
-      setRoles(Response.data); 
-    }).catch((err)=>{
-      console.log(err);
-   })
-   }
+  //  const fetchRoles=()=>{
+  //   gellAllRoles().then((Response)=>{
+  //     setRoles(Response.data); 
+  //   }).catch((err)=>{
+  //     console.log(err);
+  //  })
+  //  }
     const [members, setMembers] = useState([]);
     const[newmembers,setNewmembers]=useState([]);
     const [name, setName] = useState('');
@@ -75,27 +78,31 @@ const CommitteeMembersRegistration = () => {
 // ----------------------------------------data submission-----------------------------------
     const finalsave=(e)=>{
       e.preventDefault();
-      console.log(newmembers);
-      createCommitteeMembers(newmembers,conference.conference_id,committeeId).then((Response)=>{
-        console.log(Response.data);
-        setCompletionMessage('Members created successfully!');
-        setCount(0);
-        setNewmembers([]);
-        clearFields();
+      //console.log(newmembers);
+ 
+      const transformedData = {
+        "members": newmembers.map(item => ({
+          "name": item.name,
+          "address":item.address,
+          "place":item.place,
+          "state":item.state,
+          "country": item.country,
+          "password": item.password,
+          "mobile": item.mobile,
+          "role":item.roleName,
+          "email": item.email
+        }))
+    };
+    console.log(transformedData);
+      createCommitteeMembers(transformedData,committeeId).then((Response)=>{
+        alert(Response.data.message);
+        window.location.reload();
     }).catch((error)=>{
-     if (error.response && error.response.data && error.response.data.message) {
-       // Access the error message from the response
-       const errorMessage = error.response.data.message;
-       console.log(errorMessage);
-       // Handle the error message as needed (e.g., display it to the user)
-     } else {
-       // If the error doesn't contain a specific message, log the entire error object
        console.log(error);
-     }
     })
-    setTimeout(()=>{
-      setCompletionMessage('');
-    },3000)
+    // setTimeout(()=>{
+    //   setCompletionMessage('');
+    // },3000)
     }
     let [count,setCount]=useState(0);
     const handleSubmit = (e) => {
@@ -206,15 +213,25 @@ const delnewmwmber=(index)=>{
     }
 }
 const handleCommitteeChange=(e)=>{
- console.log(e.target.value);
- console.log(committee[e.target.selectedIndex-1]);
- let ind=committee[e.target.selectedIndex-1];
- if(ind!=0){
-  setCommitteeId(committee[e.target.selectedIndex-1].committee_id);
-  setCommitteeName(e.target.value)
- }else{
-  setCommittee('');
- }
+  console.log(e.target.value);
+  const selectedcom=e.target.value;
+  setCommitteeId(selectedcom);
+  const selectedcomm = committee.find(committee => committee._id === selectedcom);
+if (selectedcomm) {
+  setExistMembers(selectedcomm.members || []);
+  //console.log(existtopics);
+  //console.log(existmembers);
+} else {
+  setExistMembers([]);
+}
+//  console.log(committee[e.target.selectedIndex-1]);
+//  let ind=committee[e.target.selectedIndex-1];
+//  if(ind!=0){
+//   setCommitteeId(committee[e.target.selectedIndex-1].committee_id);
+//   setCommitteeName(e.target.value)
+//  }else{
+//   setCommittee('');
+//  }
  
 
 
@@ -224,7 +241,7 @@ const handleCommitteeChange=(e)=>{
     <div className="container mt-5">
             <div className="row">
             <p className="text-start conference-info">
-  <span style={{ fontSize: '18px', fontWeight: 'bold', color: 'teal' }}>Conference Name: {conference.conferences_title}</span>
+  <span style={{ fontSize: '18px', fontWeight: 'bold', color: 'teal' }}>Conference Name: {conference.conference_title}</span>
 </p>
                 <div className="col-md-6">
                   <div className="card">
@@ -232,16 +249,18 @@ const handleCommitteeChange=(e)=>{
                       <label htmlFor="committee" className="form-label">Committee:</label>
                       <select
                     className={`form-control ${errors.committeeId ? 'is-invalid' : ''}`}
-                    // value={roleName}
-                     onChange={handleCommitteeChange}
+                     value={committeeId}
+                    onChange={handleCommitteeChange}
                     
                   >
                     <option value="">Select Committee</option>
                     
-                    {committee.map((con, index) => (
-                          <option key={index} value={con.committee_name}>
+                    {committee.map(con => (
+                          <option key={con._id} value={con._id}>
                                {con.committee_name}
+
                       </option>
+                      // <option key={con._id} value={con._id}>{con.track_name}</option>
                      ))}
                   </select>
                   <div className="invalid-feedback">{errors.committeeId}</div>
@@ -316,20 +335,8 @@ const handleCommitteeChange=(e)=>{
           </div>
           <div className="mb-3">
           <label className="form-label">Roles:</label>
-                <select
-                    className={`form-control ${errors.roleName ? 'is-invalid' : ''}`}
-                    value={roleName}
-                    onChange={handleRoleChange}
-                    
-                  >
-                    <option value="">Select Roles</option>
-                    
-                  {
-                    role.map(con=>
-                        <option value={con.role_name}>{con.role_name}</option>
-                       )
-                  }
-                  </select>
+                
+                  <input type="text" className={`form-control ${errors.roleName ? 'is-invalid' : ''}`} id="role" value={roleName} onChange={(e) => setRoleName(e.target.value)} />
                 <div className="invalid-feedback">{errors.roleName}</div>
           </div>
           <div className="mb-3">
@@ -393,6 +400,12 @@ const handleCommitteeChange=(e)=>{
             </tr>
           </thead>
           <tbody>
+          {existmembers.map((member, index) => (
+                                <tr key={index}>
+                                  <td>{member.email}</td>
+                                    <td>{member.name}</td>
+                                </tr>
+                            ))}
             {newmembers.map((member, index) => (
               <tr key={index} onClick={() => populateMemberForm(member)}>
                 <td>{member.email}</td>
