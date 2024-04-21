@@ -33,6 +33,7 @@ export const createConference=(conference)=>{
 //get all conference between recent date
 export const listConferenceBtwDate=()=>{
   return axios.get('http://localhost:9090/conference/getAllConferencebtwdate');
+
 }
 // create track
 export const createTracks=(conferenceId,tracks)=>{
@@ -82,8 +83,22 @@ export const gellAllAuthors=(conference_id)=>{
 export const gellAllReviewers=(conference_id)=>{
   return axios.get(`http://localhost:9090/Reviewer/getallreviwers/${conference_id}`);
 }
-export const gellAllreviewersBeforDate=()=>axios.get('http://localhost:9090/Reviewer/getallreviewersbeforerecentdate');
-
+export const gellAllreviewersBeforDate=()=>{
+  const conference_id=sessionStorage.getItem('con');
+  if (!conference_id) {
+   
+    throw new Error('Conference ID not found in session storage.');
+  }
+  return axios.get(`http://localhost:3030/reviewer/allreviewersexcurr/${conference_id}`)
+};
+export const gellAllreviewersbyconid=()=>{
+  const conference_id=sessionStorage.getItem('con');
+  if (!conference_id) {
+   
+    throw new Error('Conference ID not found in session storage.');
+  }
+  return axios.get(`http://localhost:3030/reviewer/allreviewersbyconid/${conference_id}`)
+};
 //create committee
 export const createCommittee=(conferenceId,committee)=>{
   //return axios.post(`http://localhost:9090/committee/createcommittee/${conferenceId}`,committee)
