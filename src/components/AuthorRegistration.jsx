@@ -25,6 +25,7 @@ const AuthorRegistration = () => {
   const [completionMessage, setCompletionMessage] = useState('');
   const [topicid, setTopicid] = useState('');
   const [CoAuthors, setCoAuthors] = useState([]);
+  const [selectedTrackId,setSelectedTrackId]=useState('');
   const [errors, setErrors] = useState({
     name: '',
     affiliation: '',
@@ -45,6 +46,7 @@ const AuthorRegistration = () => {
 
   const handleTrackChange = (e) => {
     const ind = e.target.selectedIndex - 1;
+    setSelectedTrackId(e.target.value);
     if (ind !== -1) {
       setTopics(tracks[ind].topics);
       setTrack(tracks[ind].track_name);
@@ -99,13 +101,14 @@ const AuthorRegistration = () => {
     console.log(pdfFile);
     
     //console.log(CoAuthors[0]);
-    createAuthorWork(authorWorkData, topicid, conference._id,pdfFile)
+    createAuthorWork(authorWorkData, topicid, selectedTrackId, conference._id,pdfFile)
       .then((Response) => {
         alert(Response.data.message);
         // setCompletionMessage('Registration completed successfully!');
         window.location.reload();
       })
       .catch(err => {
+        alert(err.response.data.error);
         console.log(err);
       });
   };
@@ -137,6 +140,7 @@ const AuthorRegistration = () => {
     setConference(selectedConferenceData);
    
     setTracks(selectedConferenceData.tracks);
+    console.log(selectedConferenceData.tracks)
   };
 
   return (
@@ -334,7 +338,7 @@ const AuthorRegistration = () => {
                 >
                     <option value="">Select Track</option>
                     {tracks.map((con, index) => (
-                        <option key={index} value={con.track_id}>{con.track_name}</option>
+                        <option key={index} value={con._id}>{con.track_name}</option>
                     ))}
                 </select>
                 <div className="invalid-feedback">{errors.track}</div>

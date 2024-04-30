@@ -1,8 +1,9 @@
 import axios from "axios";
 const REST_API_BASE_URL="https://conference-management-backend-withnode-1.onrender.com";
+//const REST_API_BASE_URL="http://localhost:3030";
 export const listConference=()=>axios.get(REST_API_BASE_URL);  
 //create authors
-export const createAuthorWork = (authorwork,topicid,conferenceId,pdffile) => {
+export const createAuthorWork = (authorwork,topicid,trackid,conferenceId,pdffile) => {
   console.log(conferenceId);
      const formData = new FormData();
      formData.append("pdf",pdffile);
@@ -25,7 +26,7 @@ export const createAuthorWork = (authorwork,topicid,conferenceId,pdffile) => {
      formData.append("data",x);
     //return axios.post(`http://localhost:9090/authors/uploadwork/${topicid}/${conferenceId}`,formData);
 
-    return axios.post(`${REST_API_BASE_URL}/author/upload/${topicid}/${conferenceId}`,formData);
+    return axios.post(`${REST_API_BASE_URL}/author/upload/${topicid}/${conferenceId}/${trackid}`,formData);
   };
 export const createConference=(conference)=>{
    return axios.post(`${REST_API_BASE_URL}/conference/create`,conference);
@@ -73,7 +74,14 @@ export const createReviewers=(members,conference_id)=>{
 
 //fetch all users before recent date
 
-export const gellAllusersBeforDate=()=>axios.get('http://localhost:9090/user/getallusersbeforerecentdate');
+export const gellAllusersBeforDate=()=>{
+  const conference_id=sessionStorage.getItem('con');
+  if (!conference_id) {
+   
+    throw new Error('Conference ID not found in session storage.');
+  }
+  return axios.get(`${REST_API_BASE_URL}/member/allmembersexcurr/${conference_id}`);
+};
 
 //fetch all authors using conferenceid
 export const gellAllAuthors=(conference_id)=>{
@@ -89,8 +97,35 @@ export const gellAllreviewersBeforDate=()=>{
    
     throw new Error('Conference ID not found in session storage.');
   }
-  return axios.get(`https://conference-management-backend-withnode-1.onrender.com/reviewer/allreviewersexcurr/${conference_id}`)
+  return axios.get(`${REST_API_BASE_URL}/reviewer/allreviewersexcurr/${conference_id}`)
 };
+
+export const getallpaperandtrackbyconid=()=>{
+  const conference_id=sessionStorage.getItem('con');
+  if (!conference_id) {
+   
+    throw new Error('Conference ID not found in session storage.');
+  }
+  return axios.get(`${REST_API_BASE_URL}/author/getallpaperbyaonid/${conference_id}`);
+}
+export const getallpaperandconauthorbyconid=()=>{
+  const conference_id=sessionStorage.getItem('con');
+  if (!conference_id) {
+   
+    throw new Error('Conference ID not found in session storage.');
+  }
+  return axios.get(`${REST_API_BASE_URL}/author/getallpaper2byaonid/${conference_id}`);
+}
+
+export const getallmembersoftpcbyconid=()=>{
+  const conference_id=sessionStorage.getItem('con');
+  if (!conference_id) {
+   
+    throw new Error('Conference ID not found in session storage.');
+  }
+  return axios.get(`${REST_API_BASE_URL}/committee/getmembersfromtpc/${conference_id}`);
+}
+
 
 //create committee
 export const createCommittee=(conferenceId,committee)=>{
@@ -125,6 +160,7 @@ export const fetchreviewer=(reviewerId)=>{
 }
 
 export const getAllConference=()=>{
+  console.log("fff");
   // return axios.get(`http://localhost:9090/conference/getAllConference`)
   return axios.get(`${REST_API_BASE_URL}/conference/getallconference`);
 }
@@ -137,6 +173,7 @@ export const getConferencefromsession=()=>{
 }
 
 export const getConferenceById=()=>{
+  //console.log("fff");
   const conference_id=sessionStorage.getItem('con');
   if (!conference_id) {
    
@@ -159,6 +196,10 @@ export const getpdf = (authorId) => {
       });
   });
 };
+
+
+
+
 
 export const fetchauthorwork=(id)=>{
 // return axios.get(`http://localhost:9090/authors/getauthorwork/${id}`);

@@ -6,6 +6,7 @@ import { useLoaderData } from 'react-router-dom';
 function Reports_root() {
   const data = useLoaderData();
   const conference = data.data || [];
+  console.log(conference);
   const [selectedConferenceId, setSelectedConferenceId] = useState('');
     const linkStyle = {
         textDecoration: 'none' // Remove underline

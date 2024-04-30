@@ -8,7 +8,7 @@ import TrackCreation from './components/TrackCreation'
 import CommitteeMembersRegistration from './components/CommitteeMembersRegistration'
 import PaperAllotments from './components/PaperAllotments'
 import { Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from 'react-router-dom'
-import {listConferenceBtwDate,getAllConference,getConferencefromsession,getConferenceById} from './Services/ConferenceServices'
+import {listConferenceBtwDate,getAllConference,getConferencefromsession,getConferenceById,getallpaperandtrackbyconid,getallpaperandconauthorbyconid,getallmembersoftpcbyconid} from './Services/ConferenceServices'
 import ReviewersRegistration from './components/ReviewersRegistration.jsx'
 import Conference_Root from './components/Conference_Root.jsx'
 import TopicCreation from './components/TopicCreation.jsx'
@@ -106,8 +106,8 @@ const router=createBrowserRouter([
       },{
         path:'member-info',
         element:<MembersInfo/>,
-        loader:getConferenceById,
-        errorElement:<ErrorPopup message="Select conference first."   />
+        loader:getallmembersoftpcbyconid,
+        // errorElement:<ErrorPopup message="Select conference first."   />
      
       },{
         path:'/email-formation',
@@ -126,7 +126,7 @@ const router=createBrowserRouter([
         element:<ConferenceCreation/>
       }
     ]
-  },
+  } ,
     {
       path:'/author-registration',
       element:<AuthorRegistration/>,
@@ -160,10 +160,14 @@ const router=createBrowserRouter([
       errorElement:<ErrorPopup message="Select conference first."   />
     },{
       path:'/author-report',
-      element:<AuthorReport/>
+      element:<AuthorReport/>,
+      loader:getallpaperandconauthorbyconid,
+      errorElement:<ErrorPopup message="Select conference first."   />
     },{
       path:'/paper-report',
-      element:<AuthorReport2/>
+      element:<AuthorReport2/>,
+      loader:getallpaperandtrackbyconid,
+      errorElement:<ErrorPopup message="Select conference first."   />
     },{
       path:'/review-paper2',
       element:<ReviewPaper2/>

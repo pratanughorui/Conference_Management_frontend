@@ -4,15 +4,15 @@ import { useLoaderData } from 'react-router-dom';
 function MembersInfo() {
     const data = useLoaderData();
     const conference = data.data;
-    console.log(conference);
-    const rev=[];
-    for(let i=0;i<conference.committees.length;i++){
+     console.log(conference);
+    // const rev=[];
+    // for(let i=0;i<conference.committees.length;i++){
      
-            rev.push(conference.committees[i].user);
+    //         rev.push(conference.committees[i].user);
         
-    }
+    // }
     
-    console.log(rev);
+    // console.log(rev);
   return (
     <div className="container mt-5">
       <div className="card">
@@ -30,17 +30,16 @@ function MembersInfo() {
             </thead>
             <tbody>
    
-            {rev.map((reviewersArray, index) => (
-                // Nested mapping to iterate over each reviewer in the reviewersArray
-                reviewersArray.map((reviewer, subIndex) => (
-                  <tr key={`${index}-${subIndex}`}>
-                    {/* Access individual properties of each reviewer */}
-                    <td>{reviewer.name}</td>
-                    <td>{reviewer.email}</td>
-                    <td>{reviewer.mobile}</td>
-                  </tr>
-                ))
-              ))}
+            {conference.map((con, index) => (
+                                <tr key={index}>
+                                    
+                                    <td>{con.name}</td>
+                                    <td>{con.email}</td>
+                                    <td>{con.mobile}</td>
+                                    
+                                  
+                                </tr>
+                            ))}
             
             </tbody>
           </table>
