@@ -3,7 +3,7 @@ import { useLoaderData } from 'react-router-dom';
 const ReviewerInformationTable = ({ reviewers }) => {
     const data = useLoaderData();
     const conference = data.data;
-     console.log(conference);
+    //  console.log(conference);
     const rev=[];
     for(let i=0;i<conference.tracks.length;i++){
      

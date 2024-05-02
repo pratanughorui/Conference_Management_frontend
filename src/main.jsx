@@ -22,7 +22,15 @@ import AuthorReport2 from './components/AuthorReport2.jsx'
 import Reports_root from './components/Reports_Root.jsx'
 import ErrorPopup from './components/ErrorPopup.jsx'
 import ReviewPaper2 from './components/ReviewPaper2.jsx'
-import { gellAllreviewersbyconid } from './Services/ConferenceServices'
+import FirstAuthorList from './components/FirstAuthorList.report.jsx'
+import AllAuthorList from './components/AllAuthorList.report.jsx'
+import PaperWithRevList from './components/PaperWithRevList.report.jsx'
+import PaperAllotedReviewers from './components/PaperAllotedReviewers.report.jsx'
+import PaperSentCopyRight from './components/PaperSentCopyRight.report.jsx'
+import CommitteeMenbersList from './components/CommitteeMembersList.report.jsx'
+import {fetchfirstsuthors} from './Services/ConferenceServices.js'
+import PaperStatusLastDate from './components/PaperStatusLastDate.report.jsx'
+import { gellAllreviewersbyconid,fetchallauthors,fetchpaperwithreviewer,fetchpaperallotedtoreviewer,fetchpapersenttocopyright } from './Services/ConferenceServices'
 // const router=createBrowserRouter(
 //   createRoutesFromElements(
 //       <Route path='/' element={<Login/>}></Route>,
@@ -171,6 +179,38 @@ const router=createBrowserRouter([
     },{
       path:'/review-paper2',
       element:<ReviewPaper2/>
+    },
+    {
+      path:'/first-authorlist-report',
+      element:<FirstAuthorList/>,
+      loader:fetchfirstsuthors
+    },
+    {
+      path:'/all-authorlist-report',
+      element:<AllAuthorList/>,
+      loader:fetchallauthors
+    },
+    {
+      path:'/paper-reviewers-report',
+      element:<PaperWithRevList/>,
+      loader:fetchpaperwithreviewer
+    }
+    ,
+    {
+      path:'/paper-allot-reviewers-report',
+      element:<PaperAllotedReviewers/>,
+      loader:fetchpaperallotedtoreviewer
+    },{
+      path:'/paper-sent-copy-right-report',
+      element:<PaperSentCopyRight/>,
+      loader:fetchpapersenttocopyright
+    },{
+      path:'/committee-member-list-report',
+      element:<CommitteeMenbersList/>
+    },
+    {
+      path:'/paper-status-report',
+      element:<PaperStatusLastDate/>
     }
 ])
 

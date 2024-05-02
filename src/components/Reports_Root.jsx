@@ -54,6 +54,15 @@ function Reports_root() {
             <Link  to={"/author-report"} style={linkStyle}><ListGroup.Item>Authors wise list of papers</ListGroup.Item></Link><br/>
             <Link  to={"/member-info"} style={linkStyle}><ListGroup.Item>TPC Members</ListGroup.Item></Link><br/>
             <Link  to={"/reviewer-info"} style={linkStyle}><ListGroup.Item>List Of Reviewers</ListGroup.Item></Link><br/>
+          {/* //---------------------------------------- */}
+          <Link  to={"/first-authorlist-report"} style={linkStyle}><ListGroup.Item>List Of First Authors</ListGroup.Item></Link><br/>
+          <Link  to={"/all-authorlist-report"} style={linkStyle}><ListGroup.Item>List of All Authors</ListGroup.Item></Link><br/>
+          <Link  to={"/paper-status-report"} style={linkStyle}><ListGroup.Item>List of Papers with Status and Last date of Upload</ListGroup.Item></Link><br/>
+         
+          <Link  to={"/paper-reviewers-report"} style={linkStyle}><ListGroup.Item>List of Papers with Reviewers</ListGroup.Item></Link><br/>
+          <Link  to={"/paper-allot-reviewers-report"} style={linkStyle}><ListGroup.Item>List of Papers allotted to the Reviewers</ListGroup.Item></Link><br/>
+          <Link  to={"/paper-sent-copy-right-report"} style={linkStyle}><ListGroup.Item>List of Papers Sent for Copy right</ListGroup.Item></Link><br/>
+          <Link  to={"/committee-member-list-report"} style={linkStyle}><ListGroup.Item>List Of Committee Members</ListGroup.Item></Link><br/>
           </ListGroup>
         </Col>
       </Row>

@@ -201,7 +201,71 @@ export const getpdf = (authorId) => {
 
 
 
+
 export const fetchauthorwork=(id)=>{
 // return axios.get(`http://localhost:9090/authors/getauthorwork/${id}`);
 return axios.get(`${REST_API_BASE_URL}/author/fetchpaperbyid/${id}`);
 }
+
+//--------------------reports--------------------------
+
+export const fetchfirstsuthors=()=>{
+  const conference_id=sessionStorage.getItem('con');
+  if (!conference_id) {
+   
+    throw new Error('Conference ID not found in session storage.');
+  }
+  return axios.get(`${REST_API_BASE_URL}/report/getListOfFirsrAuthor/${conference_id}`);
+  }
+
+  export const fetchallauthors=()=>{
+    const conference_id=sessionStorage.getItem('con');
+    if (!conference_id) {
+     
+      throw new Error('Conference ID not found in session storage.');
+    }
+    return axios.get(`${REST_API_BASE_URL}/report/getListOfAllAuthor/${conference_id}`);
+    }
+
+    export const fetchpaperwithreviewer=()=>{
+      const conference_id=sessionStorage.getItem('con');
+      if (!conference_id) {
+       
+        throw new Error('Conference ID not found in session storage.');
+      }
+      return axios.get(`${REST_API_BASE_URL}/report/getListOfPapersWithReviewer/${conference_id}`);
+      }
+      export const fetchpaperallotedtoreviewer=()=>{
+        const conference_id=sessionStorage.getItem('con');
+        if (!conference_id) {
+         
+          throw new Error('Conference ID not found in session storage.');
+        }
+        return axios.get(`${REST_API_BASE_URL}/report/getListOfPaperAllotedToReviewer/${conference_id}`);
+        }
+export const fetchpapersenttocopyright=()=>{
+          const conference_id=sessionStorage.getItem('con');
+          if (!conference_id) {
+           
+            throw new Error('Conference ID not found in session storage.');
+          }
+          return axios.get(`${REST_API_BASE_URL}/report/getListOfPaperSentToCopyRight/${conference_id}`);
+          }
+export const fetchcommitteemembers=()=>{
+            const conference_id=sessionStorage.getItem('con');
+            if (!conference_id) {
+             
+              throw new Error('Conference ID not found in session storage.');
+            }
+            return axios.get(`${REST_API_BASE_URL}/report/getListOfCommitteeMember/${conference_id}`);
+            }
+
+            export const fetchpaperstatus=()=>{
+              const conference_id=sessionStorage.getItem('con');
+              if (!conference_id) {
+               
+                throw new Error('Conference ID not found in session storage.');
+              }
+              return axios.get(`${REST_API_BASE_URL}/report/getpaperstatus/${conference_id}`);
+              }
+

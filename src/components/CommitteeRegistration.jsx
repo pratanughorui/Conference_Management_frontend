@@ -10,8 +10,7 @@ function CommitteeRegistration() {
     const navigate = useNavigate();
     const [conferenceId, setConferenceId] = useState('');
     const [committee,setCommittee]=useState([]);
-    const [members,setMembers]=useState([]);
-  
+    
     useEffect(() => {
       if (!conference || Object.keys(conference).length === 0) {
         // If conference data is empty, show popup or navigate back
@@ -19,7 +18,7 @@ function CommitteeRegistration() {
         navigate("/"); // Navigate back to previous page
       }else{
          setCommittee(conference.committee);
-         setMembers(conference.committee.members);
+       
       }
     }, [conference, navigate]);
 
