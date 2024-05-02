@@ -30,7 +30,7 @@ import PaperSentCopyRight from './components/PaperSentCopyRight.report.jsx'
 import CommitteeMenbersList from './components/CommitteeMembersList.report.jsx'
 import {fetchfirstsuthors} from './Services/ConferenceServices.js'
 import PaperStatusLastDate from './components/PaperStatusLastDate.report.jsx'
-import { gellAllreviewersbyconid,fetchallauthors,fetchpaperwithreviewer,fetchpaperallotedtoreviewer,fetchpapersenttocopyright } from './Services/ConferenceServices'
+import { gellAllreviewersbyconid,fetchallauthors,fetchpaperwithreviewer,fetchpaperallotedtoreviewer,fetchpapersenttocopyright,fetchreviewers } from './Services/ConferenceServices'
 // const router=createBrowserRouter(
 //   createRoutesFromElements(
 //       <Route path='/' element={<Login/>}></Route>,
@@ -109,7 +109,7 @@ const router=createBrowserRouter([
       },{
         path:'reviewer-info',
         element:<ReviewerInformationTable/>,
-        loader:getConferenceById,
+        loader:fetchreviewers,
         errorElement:<ErrorPopup message="Select conference first."   />
       },{
         path:'member-info',

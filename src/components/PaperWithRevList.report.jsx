@@ -30,7 +30,7 @@ function PaperWithRevList() {
     //   fetchFirstAuthors();
     fetchpaperwithreviewer().then((response)=>{
         setAuthors(response.data);
-        console.log(response.data);
+       // console.log(response.data);
       }).catch((err)=>{
         setError('Failed to fetch data: ' + err.message);
       }).finally(()=>{

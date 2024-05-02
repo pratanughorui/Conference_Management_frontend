@@ -268,4 +268,12 @@ export const fetchcommitteemembers=()=>{
               }
               return axios.get(`${REST_API_BASE_URL}/report/getpaperstatus/${conference_id}`);
               }
+export const fetchreviewers=()=>{
+                const conference_id=sessionStorage.getItem('con');
+                if (!conference_id) {
+                 
+                  throw new Error('Conference ID not found in session storage.');
+                }
+                return axios.get(`${REST_API_BASE_URL}/report/getreviewers/${conference_id}`);
+                }
 

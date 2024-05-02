@@ -16,7 +16,10 @@
       };
 
       const handleConferenceSelect = (e) => {
-        setSelectedConferenceId(e.target.value);
+        console.log(e.target.value);
+        sessionStorage.setItem('con', e.target.value);
+          alert("conference set successfully done");
+
       };
 
       const handleFormSubmit = (e) => {
@@ -50,7 +53,7 @@
               <Form onSubmit={handleFormSubmit}>
           <Row>
             <Col xs={8}>
-              <Form.Select aria-label="Select conference" value={selectedConferenceId} onChange={(e) => setSelectedConferenceId(e.target.value)}>
+              <Form.Select aria-label="Select conference" value={selectedConferenceId} onChange={handleConferenceSelect}>
                 <option value="">Select conference</option>
                 {conference.map((conferenceItem) => (
                   <option key={conferenceItem._id} value={conferenceItem._id}>
@@ -59,9 +62,9 @@
                 ))}
               </Form.Select>
             </Col>
-            <Col xs={4}>
+            {/* <Col xs={4}>
               <Button type="submit" variant="primary">Select</Button>
-            </Col>
+            </Col> */}
           </Row>
         </Form>
                 <br />

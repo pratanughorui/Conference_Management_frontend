@@ -23,7 +23,7 @@ function AuthorReport() {
                     <th scope="col">First Author</th>
                     <th scope="col">First Author Email</th>
                     <th scope="col">First Author Country</th>
-                    <th scope="col">Authors</th>
+                    <th scope="col">co-authors</th>
                     {/* <th scope="col">Author IDs</th>
                     <th scope="col">Authors with affiliation and country</th> */}
                     <th scope="col">Copyright form, question or upload</th>

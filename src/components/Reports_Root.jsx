@@ -6,11 +6,18 @@ import { useLoaderData } from 'react-router-dom';
 function Reports_root() {
   const data = useLoaderData();
   const conference = data.data || [];
-  console.log(conference);
+  //console.log(conference);
   const [selectedConferenceId, setSelectedConferenceId] = useState('');
     const linkStyle = {
         textDecoration: 'none' // Remove underline
       }
+      const handleConferenceSelect = (e) => {
+        console.log(e.target.value);
+        sessionStorage.setItem('con', e.target.value);
+          alert("conference set successfully done");
+
+      };
+
       const handleFormSubmit = (e) => {
         e.preventDefault(); // Prevent default form submission
         if (selectedConferenceId) {
@@ -36,7 +43,7 @@ function Reports_root() {
           <Form onSubmit={handleFormSubmit}>
       <Row>
         <Col xs={8}>
-          <Form.Select aria-label="Select conference" value={selectedConferenceId} onChange={(e) => setSelectedConferenceId(e.target.value)}>
+          <Form.Select aria-label="Select conference" value={selectedConferenceId} onChange={handleConferenceSelect}>
             <option value="">Select conference</option>
             {conference.map((conferenceItem) => (
               <option key={conferenceItem._id} value={conferenceItem._id}>
@@ -45,9 +52,9 @@ function Reports_root() {
             ))}
           </Form.Select>
         </Col>
-        <Col xs={4}>
+        {/* <Col xs={4}>
           <Button type="submit" variant="primary">Select</Button>
-        </Col>
+        </Col> */}
       </Row>
     </Form> <br /><br />
             <Link  to={"/paper-report"} style={linkStyle}><ListGroup.Item>List of papers</ListGroup.Item></Link><br/>

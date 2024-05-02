@@ -41,7 +41,7 @@ function PaperStatusLastDate() {
                 <div className="col-lg-12"> {/* Correct the column size */}
                     <div className="card">
                         <div className="card-header bg-primary text-white">
-                            List of All Authors
+                        List of Papers with Status and Last date of Upload
                         </div>
                         <div className="card-body">
                             <table className="table">

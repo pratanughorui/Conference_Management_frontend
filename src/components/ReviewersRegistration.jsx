@@ -58,7 +58,7 @@ const handleSubmit=(e)=>{
       }
       if(count===0){
         setCount(trackid);
-        console.log(count);
+        //console.log(count);
       }else if(count != trackid){
           setErrorMessage("multiple track not allowed");
           setTimeout(()=>{
