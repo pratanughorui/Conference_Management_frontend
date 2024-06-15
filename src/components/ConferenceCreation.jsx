@@ -1,286 +1,344 @@
-import React,{useState} from 'react'
+import React, { useState, useEffect } from 'react';
 import { createConference } from '../Services/ConferenceServices';
-import { useNavigate } from 'react-router-dom';
 
-const ConferenceCreation = () => {
-  const navigate = useNavigate();
-    const [conferences_title, setConferences_title] = useState('');
-    const [shortname, setShortname] = useState('');
-    const [expectPaper, setExpectPaper] = useState('');
-    const [website, setWebsite] = useState('');
-    const [venue, setVenue] = useState('');
-    const [address, setAddress] = useState('');
-    const [place, setPlace] = useState('');
- const [state, setState] = useState('');
-  const [country, setCountry] = useState('');
-  const [fromDate, setFromDate] = useState('');
-  const [toDate, setToDate] = useState('');
-  const [datecallpaper, setDatecallpaper] = useState('');
-  const [lastdatesubpaper, setLastdatesubpaper] = useState('');
-  const [dateofallotpaper, setDateofallotpaper] = useState('');
-  const [lastdaterevsub, setLastdaterevsub] = useState('');
-  const [completionMessage, setCompletionMessage] = useState('');
-  const [errors, setErrors] = useState({
-    conferences_title: '',
-    // subject: '',
+function ConferenceCreation() {
+  const [conferenceDetails, setConferenceDetails] = useState({
+    name: '',
+    shortname: '',
+    website: '',
     venue: '',
+    address: '',
     place: '',
+    state: '',
     country: '',
     fromDate: '',
-    toDate: ''
-    
+    toDate: '',
+    callForPaperDate: '',
+    lastSubmissionDate: '',
+    expectedSubmissions: 'None',
   });
-  
-  const handleFormSubmit = (e) => {
-    e.preventDefault();
-    // Handle form submission logic here
-    const newErrors = {};
-    if (!conferences_title) newErrors.conferences_title = 'Conference title is required.';
-    // if (!subject) newErrors.subject = 'This is required.';
-    if (!venue) newErrors.venue = 'this is required.';
-    if (!place) newErrors.place = 'this is required.';
-    if (!country) newErrors.country = 'this is required.';
-    if (!fromDate) newErrors.fromDate = 'thise is required.';
-    if (!toDate) newErrors.toDate = 'this is required.';
-    if (!datecallpaper) newErrors.datecallpaper = 'this is required.';
-    if (!lastdatesubpaper) newErrors.lastdatesubpaper = 'this is required.';
-    if (!dateofallotpaper) newErrors.dateofallotpaper = 'this is required.';
-    if (!lastdaterevsub) newErrors.lastdaterevsub = 'this is required.';
-    setErrors(newErrors);
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [errors, setErrors] = useState({});
 
-    if (Object.keys(newErrors).length > 0) {
-      return;
-    }
-    console.log("fff");
-    //const conference={conferences_title,shortname,website,venue,address,place,state,country,fromDate,toDate,datecallpaper,lastdatesubpaper,dateofallotpaper,lastdaterevsub,expectPaper};
-    //console.log(conference);
-    const conference={
-      conference_title: conferences_title,
-      short_name: shortname,
-      website: website,
-      venue: venue,
-      address: address,
-      place: place,
-       state: state,
-      country: country,
-  from_date: fromDate,
-  to_date: toDate,
-  last_date_paper_sub: lastdatesubpaper,
-  date_allot_paper_torev: dateofallotpaper,
-  last_date_review_sub: lastdaterevsub,
-  number_of_papers: expectPaper
-    }
-    console.log(conference);
-    createConference(conference).then((Response)=>{
-      console.log(Response.data);
-      setCompletionMessage('Conference created successfully!');
-      setConferences_title('');
-      setWebsite('');
-      setShortname('');
-      setAddress('');
-      setState('');
-      setVenue('');
-      setExpectPaper('');
-      setPlace('');
-      setCountry('');
-      setFromDate('');
-      setToDate('');
-      setDatecallpaper('');
-      setDateofallotpaper('');
-      setLastdaterevsub('');
-      setLastdatesubpaper('');
-      // setTimeout(()=>{
-      //   navigate(-1);
-  
-      // },2000);
-      setTimeout(() => {
-        window.scrollTo({
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setConferenceDetails((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const validate = () => {
+    let errors = {};
+    if (!conferenceDetails.name) errors.name = 'Conference Title is required';
+    if (!conferenceDetails.website) errors.website = 'Website is required';
+    if (!conferenceDetails.venue) errors.venue = 'Venue is required';
+    if (!conferenceDetails.address) errors.address = 'Address is required';
+    if (!conferenceDetails.place) errors.place = 'Place is required';
+    if (!conferenceDetails.state) errors.state = 'State is required';
+    if (!conferenceDetails.country) errors.country = 'Country is required';
+    if (!conferenceDetails.fromDate) errors.fromDate = 'From Date is required';
+    if (!conferenceDetails.toDate) errors.toDate = 'To Date is required';
+    if (!conferenceDetails.callForPaperDate) errors.callForPaperDate = 'Date of Call for Paper is required';
+    if (!conferenceDetails.lastSubmissionDate) errors.lastSubmissionDate = 'Last Date for Submission of Paper is required';
+
+    setErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const fieldsEmpty = () => {
+    setConferenceDetails({
+      name: '',
+      shortname: '',
+      website: '',
+      venue: '',
+      address: '',
+      place: '',
+      state: '',
+      country: '',
+      fromDate: '',
+      toDate: '',
+      callForPaperDate: '',
+      lastSubmissionDate: '',
+      expectedSubmissions: 'None',
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (validate()) {
+      setLoading(true);
+      //setSuccess(false);
+
+      const conference={
+        conference_title: conferenceDetails.name,
+        short_name: conferenceDetails.shortname,
+        website: conferenceDetails.website,
+        venue: conferenceDetails.venue,
+        address: conferenceDetails.address,
+        place: conferenceDetails.place,
+         state: conferenceDetails.state,
+        country: conferenceDetails.country,
+    from_date: conferenceDetails.fromDate,
+    to_date: conferenceDetails.toDate,
+    date_of_call_for_paper:conferenceDetails.callForPaperDate,
+    last_date_paper_sub: conferenceDetails.lastSubmissionDate,
+    number_of_papers: conferenceDetails.expectedSubmissions
+      }
+      createConference(conference).then((Response)=>{
+        setSuccess(true);
+        fieldsEmpty();
+        console.log(Response.data);
+           window.scrollTo({
           top: 0,
           behavior: 'smooth' // Smooth scroll behavior
         });
-      }, 1000);
-    }).catch((err)=>{
-      // console.log("love");
-      console.log(err);
-    })
-   
+      }).catch((err)=>{
+        console.log(err);
+      }).finally(()=>{
+         setLoading(false);
+      })
+      //  console.log(conference);
+
+
+
+      // setTimeout(() => {
+      //   console.log('Conference Details:', conferenceDetails);
+      //   setLoading(false);
+      //   setSuccess(true);
+      //   window.scrollTo({
+      //     top: 0,
+      //     behavior: 'smooth' // Smooth scroll behavior
+      //   });
+      //  // fieldsEmpty();
+      // }, 5000); // Simulating a 5-second loading delay
+    }
   };
+
   return (
-    <div className="container mt-5">
-    <div className="row justify-content-center">
-      <div className="col-md-8">
-        <div className="card">
-          <div className="card-body">
-            <h3 className="card-title text-center mb-4">Create Conference</h3>
-            {completionMessage && (
-                <div className="alert alert-success" role="alert">
-                  {completionMessage}
-                </div>
-              )}
-            <form onSubmit={handleFormSubmit}>
-              <label className="form-label">Conference Title:</label>
-              <input
-                type="text"
-                className={`form-control mb-3 ${errors.conferences_title ? 'is-invalid' : ''}`}
-                value={conferences_title}
-                onChange={(e) => setConferences_title(e.target.value)}
-              />
-               <div className="invalid-feedback">{errors.conferences_title}</div>
-
-               <label className="form-label">Short Name:</label>
-              <input
-                type="text"
-                className="form-control mb-3"
-                value={shortname}
-                onChange={(e) => setShortname(e.target.value)}
-              />
-               
-
-              <label className="form-label">Webside:</label>
-              <input
-                type="text"
-                className={"form-control mb-3"}
-                value={website}
-                onChange={(e) => setWebsite(e.target.value)}
-              />
-                {/* <div className="invalid-feedback">{errors.subject}</div> */}
-              <label className="form-label">Venue:</label>
-              <input
-                type="text"
-                className={`form-control mb-3 ${errors.venue ? 'is-invalid' : ''}`}
-                value={venue}
-                onChange={(e) => setVenue(e.target.value)}
-              />
- <div className="invalid-feedback">{errors.venue}</div>
- {/* -------------------------------------------------------------------------------------------- */}
- <label className="form-label">Address:</label>
-              <input
-                type="text"
-                className={`form-control mb-3 ${errors.venue ? 'is-invalid' : ''}`}
-                value={address}
-               onChange={(e) => setAddress(e.target.value)}
-              />
- <div className="invalid-feedback">{errors.venue}</div>
- {/* ------------------------------------------------------------------- */}
-              <label className="form-label">Place:</label>
-              <input
-                type="text"
-                className={`form-control mb-3 ${errors.place ? 'is-invalid' : ''}`}
-                value={place}
-                onChange={(e) => setPlace(e.target.value)}
-              />
- <div className="invalid-feedback">{errors.place}</div>
- {/* -------------------------------------------------------------------------------------------- */}
- <label className="form-label">State:</label>
-              <input
-                type="text"
-                className={`form-control mb-3 ${errors.venue ? 'is-invalid' : ''}`}
-                value={state}
-                onChange={(e) => setState(e.target.value)}
-              />
- <div className="invalid-feedback">{errors.venue}</div>
- {/* ------------------------------------------------------------------- */}
-              <label className="form-label">Country:</label>
-              <input
-                type="text"
-                className={`form-control mb-3 ${errors.country ? 'is-invalid' : ''}`}
-                value={country}
-                onChange={(e) => setCountry(e.target.value)}
-              />
- <div className="invalid-feedback">{errors.country}</div>
-              <label className="form-label">From Date:</label>
-              <input
-                type="date"
-                className={`form-control mb-3 ${errors.fromDate ? 'is-invalid' : ''}`}
-                value={fromDate}
-                onChange={(e) => setFromDate(e.target.value)}
-              />
- <div className="invalid-feedback">{errors.fromDate}</div>
-              <label className="form-label">To Date:</label>
-              <input
-                type="date"
-                className={`form-control mb-3 ${errors.toDate ? 'is-invalid' : ''}`}
-                value={toDate}
-                onChange={(e) => setToDate(e.target.value)}
-              />
- <div className="invalid-feedback">{errors.toDate}</div>
- {/* ---------------------------------------------------------------------------------- */}
- <label className="form-label">Date of call for paper:</label>
-              <input
-                type="date"
-                className={`form-control mb-3 ${errors.datecallpaper ? 'is-invalid' : ''}`}
-                value={datecallpaper}
-                onChange={(e) => setDatecallpaper(e.target.value)}
-              />
- <div className="invalid-feedback">{errors.datecallpaper}</div>
- <label className="form-label">Last date for submission of paper:</label>
-              <input
-                type="date"
-                className={`form-control mb-3 ${errors.lastdatesubpaper ? 'is-invalid' : ''}`}
-                value={lastdatesubpaper}
-                onChange={(e) => setLastdatesubpaper(e.target.value)}
-              />
- <div className="invalid-feedback">{errors.lastdatesubpaper}</div>
- <label className="form-label">Date of allotment of papers to Reviewers:</label>
-              <input
-                type="date"
-                className={`form-control mb-3 ${errors.dateofallotpaper ? 'is-invalid' : ''}`}
-                value={dateofallotpaper}
-                onChange={(e) => setDateofallotpaper(e.target.value)}
-              />
- <div className="invalid-feedback">{errors.dateofallotpaper}</div>
- <label className="form-label">Last date for review submission:</label>
-              <input
-                type="date"
-                className={`form-control mb-3 ${errors.lastdaterevsub ? 'is-invalid' : ''}`}
-                value={lastdaterevsub}
-                onChange={(e) => setLastdaterevsub(e.target.value)}
-              />
- <div className="invalid-feedback">{errors.lastdaterevsub}</div>
- {/* ------------------------------------------------------------------- */}
- <div className="mb-3">
-                            <label className="form-label d-block">How many submission do you expect</label>
-                           
-                            <div className="form-check form-check-inline">
-                                <input className="form-check-input" type="radio" name="radioOption" id="radioOption3" value="<100" checked={expectPaper === "<100"} onChange={(e) => setExpectPaper(e.target.value)} />
-                                <label className="form-check-label" htmlFor="radioOption3">&lt;100</label>
-                            </div><br />
-                            <div className="form-check form-check-inline">
-                                <input className="form-check-input" type="radio" name="radioOption" id="radioOption4" value="<500" onChange={(e) => setExpectPaper(e.target.value)}/>
-                                <label className="form-check-label" htmlFor="radioOption4">&lt;500</label>
-                            </div><br />
-                            <div className="form-check form-check-inline">
-                                <input className="form-check-input" type="radio" name="radioOption" id="radioOption5" value="<1000" onChange={(e) => setExpectPaper(e.target.value)}/>
-                                <label className="form-check-label" htmlFor="radioOption5">&lt;1000</label>
-                            </div><br />
-                            <div className="form-check form-check-inline">
-                                <input className="form-check-input" type="radio" name="radioOption" id="radioOption6" value="<2000" onChange={(e) => setExpectPaper(e.target.value)}/>
-                                <label className="form-check-label" htmlFor="radioOption6">&lt;2000</label>
-                            </div><br />
-                            <div className="form-check form-check-inline">
-                                <input className="form-check-input" type="radio" name="radioOption" id="radioOption7" value="<5000" onChange={(e) => setExpectPaper(e.target.value)}/>
-                                <label className="form-check-label" htmlFor="radioOption7">&lt;5000</label>
-                            </div><br />
-                            <div className="form-check form-check-inline">
-                                <input className="form-check-input" type="radio" name="radioOption" id="radioOption8" value="<10000" onChange={(e) => setExpectPaper(e.target.value)}/>
-                                <label className="form-check-label" htmlFor="radioOption8">&lt;10000</label>
-                            </div><br />
-                            <div className="form-check form-check-inline">
-                                <input className="form-check-input" type="radio" name="radioOption" id="radioOption9" value="option1" onChange={(e) => setExpectPaper(e.target.value)}/>
-                                <label className="form-check-label" htmlFor="radioOption9">&lt;20000</label>
-                            </div>
-                            
-                        </div>
-              <button type="submit" className="btn btn-primary w-100 mt-3">
-                Submit
-              </button>
-            </form>
+    <div className='mt-5'>
+      <div className="container border border-3 shadow-sm p-3 mb-5 bg-body-tertiary rounded" style={{ height: 'auto', padding: '30px' }}>
+        <h1 className="display-4 text-center"> Create Conference</h1>
+        {success && (
+          <div className="alert alert-success" role="alert">
+            Conference details submitted successfully!
+          </div>
+        )}
+        <form onSubmit={handleSubmit}>
+          <div className="row g-2 m-4">
+            <div className="col-md">
+              <div className="form-floating">
+                <input
+                  type="text"
+                  className="form-control"
+                  id="name"
+                  name="name"
+                  onChange={handleChange}
+                  value={conferenceDetails.name}
+                />
+                <label htmlFor="name">Conference Title<span style={{ color: 'red' }}>*</span></label>
+                {errors.name && <small className="text-danger">{errors.name}</small>}
+              </div>
+            </div>
+            <div className="col-md">
+              <div className="form-floating">
+                <input
+                  type="text"
+                  className="form-control"
+                  id="shortname"
+                  name="shortname"
+                  onChange={handleChange}
+                  value={conferenceDetails.shortname}
+                />
+                <label htmlFor="shortname">Short Name</label>
+              </div>
+            </div>
+          </div>
+          <div className="row g-2 m-4">
+            <div className="col-md">
+              <div className="form-floating">
+                <input
+                  type="text"
+                  className="form-control"
+                  id="website"
+                  name="website"
+                  onChange={handleChange}
+                  value={conferenceDetails.website}
+                />
+                <label htmlFor="website">Website<span style={{ color: 'red' }}>*</span></label>
+                {errors.website && <small className="text-danger">{errors.website}</small>}
+              </div>
+            </div>
+            <div className="col-md">
+              <div className="form-floating">
+                <input
+                  type="text"
+                  className="form-control"
+                  id="venue"
+                  name="venue"
+                  onChange={handleChange}
+                  value={conferenceDetails.venue}
+                />
+                <label htmlFor="venue">Venue<span style={{ color: 'red' }}>*</span></label>
+                {errors.venue && <small className="text-danger">{errors.venue}</small>}
+              </div>
+            </div>
+            <div className="col-md">
+              <div className="form-floating">
+                <input
+                  type="text"
+                  className="form-control"
+                  id="address"
+                  name="address"
+                  onChange={handleChange}
+                  value={conferenceDetails.address}
+                />
+                <label htmlFor="address">Address<span style={{ color: 'red' }}>*</span></label>
+                {errors.address && <small className="text-danger">{errors.address}</small>}
+              </div>
+            </div>
+          </div>
+          <div className="row g-2 m-4">
+            <div className="col-md">
+              <div className="form-floating">
+                <input
+                  type="text"
+                  className="form-control"
+                  id="place"
+                  name="place"
+                  onChange={handleChange}
+                  value={conferenceDetails.place}
+                />
+                <label htmlFor="place">Place<span style={{ color: 'red' }}>*</span></label>
+                {errors.place && <small className="text-danger">{errors.place}</small>}
+              </div>
+            </div>
+            <div className="col-md">
+              <div className="form-floating">
+                <input
+                  type="text"
+                  className="form-control"
+                  id="state"
+                  name="state"
+                  onChange={handleChange}
+                  value={conferenceDetails.state}
+                />
+                <label htmlFor="state">State<span style={{ color: 'red' }}>*</span></label>
+                {errors.state && <small className="text-danger">{errors.state}</small>}
+              </div>
+            </div>
+            <div className="col-md">
+              <div className="form-floating">
+                <input
+                  type="text"
+                  className="form-control"
+                  id="country"
+                  name="country"
+                  onChange={handleChange}
+                  value={conferenceDetails.country}
+                />
+                <label htmlFor="country">Country<span style={{ color: 'red' }}>*</span></label>
+                {errors.country && <small className="text-danger">{errors.country}</small>}
+              </div>
+            </div>
+          </div>
+          <div className="row g-2 m-4">
+            <div className="col-md">
+              <div className="form-floating">
+                <input
+                  type="date"
+                  className="form-control"
+                  id="fromDate"
+                  name="fromDate"
+                  onChange={handleChange}
+                  value={conferenceDetails.fromDate}
+                />
+                <label htmlFor="fromDate">From Date<span style={{ color: 'red' }}>*</span></label>
+                {errors.fromDate && <small className="text-danger">{errors.fromDate}</small>}
+              </div>
+            </div>
+            <div className="col-md">
+              <div className="form-floating">
+                <input
+                  type="date"
+                  className="form-control"
+                  id="toDate"
+                  name="toDate"
+                  onChange={handleChange}
+                  value={conferenceDetails.toDate}
+                />
+                <label htmlFor="toDate">To Date<span style={{ color: 'red' }}>*</span></label>
+                {errors.toDate && <small className="text-danger">{errors.toDate}</small>}
+              </div>
+            </div>
+            <div className="col-md">
+              <div className="form-floating">
+                <input
+                  type="date"
+                  className="form-control"
+                  id="callForPaperDate"
+                  name="callForPaperDate"
+                  onChange={handleChange}
+                  value={conferenceDetails.callForPaperDate}
+                />
+                <label htmlFor="callForPaperDate">Date of Call for Paper<span style={{ color: 'red' }}>*</span></label>
+                {errors.callForPaperDate && <small className="text-danger">{errors.callForPaperDate}</small>}
+              </div>
+            </div>
+            <div className="col-md">
+              <div className="form-floating">
+                <input
+                  type="date"
+                  className="form-control"
+                  id="lastSubmissionDate"
+                  name="lastSubmissionDate"
+                  onChange={handleChange}
+                  value={conferenceDetails.lastSubmissionDate}
+                />
+                <label htmlFor="lastSubmissionDate">Last Date for Submission of Paper<span style={{ color: 'red' }}>*</span></label>
+                {errors.lastSubmissionDate && <small className="text-danger">{errors.lastSubmissionDate}</small>}
+              </div>
+            </div>
+          </div>
+          <div className="row g-2 m-4">
+            <div className="col-md">
+              <div className="form-floating">
+                <select
+                  className="form-select"
+                  id="expectedSubmissions"
+                  name="expectedSubmissions"
+                  onChange={handleChange}
+                  value={conferenceDetails.expectedSubmissions}
+                >
+                  <option value="None">None</option>
+                  <option value="<100">&lt;100</option>
+                  <option value="<500">&lt;500</option>
+                  <option value="<1000">&lt;1000</option>
+                  <option value="<2000">&lt;2000</option>
+                  <option value="<5000">&lt;5000</option>
+                  <option value="<10000">&lt;10000</option>
+                  <option value="<20000">&lt;20000</option>
+                </select>
+                <label htmlFor="expectedSubmissions">How Many Submissions Do You Expect<span style={{ color: 'red' }}>*</span></label>
+              </div>
+            </div>
+          </div>
+          <div className="p-1 text-center">
+            <button type="submit" className="btn btn-primary">Submit</button>
+          </div>
+        </form>
+        {loading && (
+        <div className="d-flex justify-content-center">
+          <div className="spinner-border text-primary" role="status">
+            <span className="visually-hidden">Loading...</span>
           </div>
         </div>
+      )}
       </div>
+     
     </div>
-  </div>
-  )
+  );
 }
 
-export default ConferenceCreation
+export default ConferenceCreation;

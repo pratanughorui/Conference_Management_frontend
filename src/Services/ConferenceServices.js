@@ -48,7 +48,7 @@ export const getalltracks=(conferenceid)=>{
 }
 //get all reviewers by track
 export const getallreviewersbytrack=(track_id)=>{
-  return axios.get(`http://localhost:9090/Reviewer/getallreviwersbytrack/${track_id}`)
+  return axios.get(`${REST_API_BASE_URL}/Reviewer/getallreviwersbytrack/${track_id}`)
 }
 
 
@@ -160,7 +160,7 @@ export const fetchreviewer=(reviewerId)=>{
 }
 
 export const getAllConference=()=>{
-  console.log("fff");
+  // console.log("fff");
   // return axios.get(`http://localhost:9090/conference/getAllConference`)
   return axios.get(`${REST_API_BASE_URL}/conference/getallconference`);
 }
@@ -181,6 +181,10 @@ export const getConferenceById=()=>{
   }
  // return axios.get(`http://localhost:9090/conference/getConference/${conference_id}`)
   return axios.get(`${REST_API_BASE_URL}/conference/getconferencebyid/${conference_id}`)
+}
+
+export const getConferenceByid=(con_id)=>{
+  return axios.get(`${REST_API_BASE_URL}/conference/fetch/${con_id}`)
 }
 
 export const getpdf = (authorId) => {
@@ -277,3 +281,24 @@ export const fetchreviewers=()=>{
                 return axios.get(`${REST_API_BASE_URL}/report/getreviewers/${conference_id}`);
                 }
 
+export const conferenceAndTrack=(conid)=>{
+  // const conference_id=sessionStorage.getItem('con');
+  // if (!conference_id) {
+   
+  //   throw new Error('Conference ID not found in session storage.');
+  // }
+  return axios.get(`${REST_API_BASE_URL}/conference/conferenceAndTrack/${conid}`);
+}
+
+export const getconid=()=>{
+    const conference_id=sessionStorage.getItem('con');
+  if (!conference_id) {
+   
+    throw new Error('Conference ID not found in session storage.');
+  }
+  return conference_id;
+}
+
+export const getallreviewersbytrackid=(track_id)=>{
+  return axios.get(`${REST_API_BASE_URL}/Reviewer/allreviewersbytrackid/${track_id}`);
+}

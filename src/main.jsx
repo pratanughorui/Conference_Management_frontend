@@ -30,7 +30,7 @@ import PaperSentCopyRight from './components/PaperSentCopyRight.report.jsx'
 import CommitteeMenbersList from './components/CommitteeMembersList.report.jsx'
 import {fetchfirstsuthors} from './Services/ConferenceServices.js'
 import PaperStatusLastDate from './components/PaperStatusLastDate.report.jsx'
-import { gellAllreviewersbyconid,fetchallauthors,fetchpaperwithreviewer,fetchpaperallotedtoreviewer,fetchpapersenttocopyright,fetchreviewers } from './Services/ConferenceServices'
+import { gellAllreviewersbyconid,getconid,fetchallauthors,fetchpaperwithreviewer,fetchpaperallotedtoreviewer,fetchpapersenttocopyright,fetchreviewers,conferenceAndTrack } from './Services/ConferenceServices'
 // const router=createBrowserRouter(
 //   createRoutesFromElements(
 //       <Route path='/' element={<Login/>}></Route>,
@@ -132,6 +132,28 @@ const router=createBrowserRouter([
       },{
         path:'/create-conference',
         element:<ConferenceCreation/>
+      },{
+        path:'/reviewers-registration',
+        element:<ReviewersRegistration/>,
+        loader:getconid,
+        errorElement:<ErrorPopup message="Select conference first."   />
+  
+      },
+      {
+        path:'/committee-members-registration',
+         element:<CommitteeMembersRegistration/>,
+        // loader:getConferenceById,
+        // errorElement:<ErrorPopup message="Select conference first."   />
+      },{
+        path:'/committee-registration',
+        element:<CommitteeRegistration/>,
+        loader:getConferenceById,
+        errorElement:<ErrorPopup message="Select conference first."   />
+      },{
+        path:'/track-creation',
+        element:<TrackCreation/>,
+         loader:getConferenceById,
+         errorElement:<ErrorPopup message="Select conference first."   />
       }
     ]
   } ,
@@ -140,30 +162,8 @@ const router=createBrowserRouter([
       element:<AuthorRegistration/>,
       loader:getAllConference
     },{
-      path:'/track-creation',
-      element:<TrackCreation/>,
-       loader:getConferenceById,
-       errorElement:<ErrorPopup message="Select conference first."   />
-    },
-    {
-      path:'/committee-members-registration',
-       element:<CommitteeMembersRegistration/>,
-      loader:getConferenceById,
-      errorElement:<ErrorPopup message="Select conference first."   />
-    },{
-      path:'/reviewers-registration',
-      element:<ReviewersRegistration/>,
-      loader:getConferenceById,
-      errorElement:<ErrorPopup message="Select conference first."   />
-
-    },{
       path:'/topic-creation',
       element:<TopicCreation/>,
-      loader:getConferenceById,
-      errorElement:<ErrorPopup message="Select conference first."   />
-    },{
-      path:'/committee-registration',
-      element:<CommitteeRegistration/>,
       loader:getConferenceById,
       errorElement:<ErrorPopup message="Select conference first."   />
     },{
