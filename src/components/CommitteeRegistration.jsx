@@ -1,5 +1,5 @@
 import React,{useEffect,useState} from 'react'
-import { createCommittee } from '../Services/ConferenceServices';
+import { createCommittee,deleteCommitte } from '../Services/ConferenceServices';
 import { useLoaderData } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
@@ -10,6 +10,8 @@ function CommitteeRegistration() {
     const navigate = useNavigate();
     const [conferenceId, setConferenceId] = useState('');
     const [committee,setCommittee]=useState([]);
+    const [loading, setLoading] = useState(false);
+    const [loadingfordel, setLoadingfordel] = useState(false);
     
     useEffect(() => {
       if (!conference || Object.keys(conference).length === 0) {
@@ -42,25 +44,47 @@ function CommitteeRegistration() {
     };
   
     const handleFormSubmit = (e) => {
-        e.preventDefault();
-        setErrors('');
-        if(tracks.length===0){
-           setErrors("aaa");
-            return;
-        }
-        const com={
-          committees:tracks
-        }
-        console.log(com);
-        createCommittee(conference._id,com).then((r)=>{
-          alert(r.data.message);
+      e.preventDefault();
+      setLoading(true)
+      setErrors('');
+      if(tracks.length === 0) {
+          setErrors("aaa");
+          return;
+      }
+      const com = {
+          committees: tracks
+      };
+      console.log(com);
+  
+      // Introduce a delay of 2 seconds (2000 milliseconds) before creating the committee
+    
+          createCommittee(conference._id, com).then((r) => {
+              setLoading(false);
+              // alert(r.data.message);
+              window.location.reload();
+          }).catch((err) => {
+            setLoading(false);
+              console.log(err);
+              
+          });
+     
+  };
+  
+    const handleRemoveCommittee=(com_id)=>{
+      setLoadingfordel(true);
+    
+        deleteCommitte(com_id).then((Response)=>{
+          //console.log();
+          setLoadingfordel(false);
+          // alert(Response.data.message);
           window.location.reload();
-        }).catch((err)=>{
-            console.log(err);
-        })
-
-        
-    };
+      }).catch((err)=>{
+        setLoadingfordel(false);
+        console.log(err);
+      })
+     
+    }
+  
   return (
     <div>
         
@@ -146,29 +170,52 @@ function CommitteeRegistration() {
               <button type="submit" className="btn btn-primary w-100 mt-3" >
                 Submit
               </button>
+              {loading && (
+        <div className="d-flex justify-content-center">
+          <div className="spinner-border text-primary" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      )}
             </form>
           </div>
         </div>
       </div>
       <div className="col-md-6">
-                    <table className="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">Committee</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {committee.map((com, index) => (
-                                <tr key={index}>
-                                    <td>{com.committee_name}</td>
-                                </tr>
-                            ))}
-                            {/* <tr>
-                              <td>ddd</td>
-                            </tr> */}
-                        </tbody>
-                    </table>
-                </div>
+    <table className="table">
+    {loadingfordel && (
+        <div className="d-flex justify-content-center">
+          <div className="spinner-border text-primary" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      )}
+        <thead>
+            <tr>
+                <th scope="col">Committee</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {committee.map((com, index) => (
+                <tr key={index}>
+                    <td>{com.committee_name}</td>
+                    <td>
+                        <button
+                            type="button"
+                            className="btn btn-danger btn-sm"
+                            onClick={() => handleRemoveCommittee(com._id)}
+                        >
+                            &times;
+                        </button>
+                       
+                    </td>
+                </tr>
+            ))}
+        </tbody>
+    </table>
+</div>
+
     </div>
   </div>
   </div>

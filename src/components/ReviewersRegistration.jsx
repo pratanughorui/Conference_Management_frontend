@@ -477,9 +477,7 @@ function ReviewersRegistration() {
       formData.email !== '' &&
       formData.affiliation !== '' &&
       formData.country !== '' &&
-      formData.mobile !== '' &&
-      formData.googleScholarId !== '' &&
-      formData.orcidId !== ''
+      formData.mobile !== '' 
     );
   };
 
@@ -654,7 +652,7 @@ console.log(transformedData);
                   value={formData.googleScholarId}
                   onChange={(e) => setFormData({ ...formData, googleScholarId: e.target.value })}
                 />
-                <label htmlFor="googleScholarId">Google Scholar ID<span style={{ color: 'red' }}>*</span></label>
+                <label htmlFor="googleScholarId">Google Scholar ID</label>
               </div>
             </div>
             <div className="col-md">
@@ -667,7 +665,7 @@ console.log(transformedData);
                   value={formData.orcidId}
                   onChange={(e) => setFormData({ ...formData, orcidId: e.target.value })}
                 />
-                <label htmlFor="orcidId">ORCID ID<span style={{ color: 'red' }}>*</span></label>
+                <label htmlFor="orcidId">ORCID ID</label>
               </div>
             </div>
           </div>

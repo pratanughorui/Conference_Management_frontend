@@ -1,9 +1,9 @@
 import axios from "axios";
 const REST_API_BASE_URL="https://conference-management-backend-withnode-1.onrender.com";
-//const REST_API_BASE_URL="http://localhost:3030";
+// const REST_API_BASE_URL="http://localhost:3030";
 export const listConference=()=>axios.get(REST_API_BASE_URL);  
 //create authors
-export const createAuthorWork = (authorwork,topicid,trackid,conferenceId,pdffile) => {
+export const createAuthorWork = (authorwork,trackid,conferenceId,pdffile) => {
   console.log(conferenceId);
      const formData = new FormData();
      formData.append("pdf",pdffile);
@@ -26,7 +26,7 @@ export const createAuthorWork = (authorwork,topicid,trackid,conferenceId,pdffile
      formData.append("data",x);
     //return axios.post(`http://localhost:9090/authors/uploadwork/${topicid}/${conferenceId}`,formData);
 
-    return axios.post(`${REST_API_BASE_URL}/author/upload/${topicid}/${conferenceId}/${trackid}`,formData);
+    return axios.post(`${REST_API_BASE_URL}/author/upload/${conferenceId}/${trackid}`,formData);
   };
 export const createConference=(conference)=>{
    return axios.post(`${REST_API_BASE_URL}/conference/create`,conference);
@@ -301,4 +301,12 @@ export const getconid=()=>{
 
 export const getallreviewersbytrackid=(track_id)=>{
   return axios.get(`${REST_API_BASE_URL}/Reviewer/allreviewersbytrackid/${track_id}`);
+}
+
+export const deleteCommitte=(com_id)=>{
+  return axios.delete(`${REST_API_BASE_URL}/committee/deleteCommittee/${com_id}`);
+}
+
+export const deleteTrack=(track_id)=>{
+  return axios.delete(`${REST_API_BASE_URL}/track/deleteTrack/${track_id}`);
 }

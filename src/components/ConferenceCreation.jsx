@@ -32,7 +32,7 @@ function ConferenceCreation() {
   const validate = () => {
     let errors = {};
     if (!conferenceDetails.name) errors.name = 'Conference Title is required';
-    if (!conferenceDetails.website) errors.website = 'Website is required';
+    // if (!conferenceDetails.website) errors.website = 'Website is required';
     if (!conferenceDetails.venue) errors.venue = 'Venue is required';
     if (!conferenceDetails.address) errors.address = 'Address is required';
     if (!conferenceDetails.place) errors.place = 'Place is required';
@@ -120,11 +120,7 @@ function ConferenceCreation() {
     <div className='mt-5'>
       <div className="container border border-3 shadow-sm p-3 mb-5 bg-body-tertiary rounded" style={{ height: 'auto', padding: '30px' }}>
         <h1 className="display-4 text-center"> Create Conference</h1>
-        {success && (
-          <div className="alert alert-success" role="alert">
-            Conference details submitted successfully!
-          </div>
-        )}
+       
         <form onSubmit={handleSubmit}>
           <div className="row g-2 m-4">
             <div className="col-md">
@@ -166,7 +162,7 @@ function ConferenceCreation() {
                   onChange={handleChange}
                   value={conferenceDetails.website}
                 />
-                <label htmlFor="website">Website<span style={{ color: 'red' }}>*</span></label>
+                <label htmlFor="website">Website</label>
                 {errors.website && <small className="text-danger">{errors.website}</small>}
               </div>
             </div>
@@ -324,10 +320,16 @@ function ConferenceCreation() {
               </div>
             </div>
           </div>
+          {success && (
+          <div className="alert alert-success" role="alert">
+            Conference details submitted successfully!
+          </div>
+        )}
           <div className="p-1 text-center">
             <button type="submit" className="btn btn-primary">Submit</button>
           </div>
         </form>
+        
         {loading && (
         <div className="d-flex justify-content-center">
           <div className="spinner-border text-primary" role="status">

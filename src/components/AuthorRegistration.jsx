@@ -7,6 +7,7 @@ const AuthorRegistration = () => {
   const data = useLoaderData();
   const conferenceList = data.data;
   //console.log(conferenceList);
+  const [loading, setLoading] = useState(false);
   const [conference, setConference] = useState('');
   const [tracks, setTracks] = useState([]);
   const [topics, setTopics] = useState([]);
@@ -57,6 +58,7 @@ const AuthorRegistration = () => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
+    console.log('gggggg');
     const newErrors = {};
    
     if (!name) newErrors.name = 'Name is required.';
@@ -66,7 +68,7 @@ const AuthorRegistration = () => {
     if (!email) newErrors.email = 'Email is required.';
     if (!title) newErrors.title = 'Title is required.';
     if (!track) newErrors.track = 'Track is required.';
-    if (!topicid) newErrors.topicid = 'Topic is required.';
+    // if (!topicid) newErrors.topicid = 'Topic is required.';
     if (!keywords) newErrors.keywords = 'Keywords are required.';
     if (!abstract) newErrors.abstract = 'Abstract is required.';
     if (!pdfFile) newErrors.pdfFile = 'PDF file is required.';
@@ -99,18 +101,19 @@ const AuthorRegistration = () => {
     };
     //const authorwork = { name, affiliation, country, contactNumber, email,googlescId,orchidId, title, keywords, abstract, pdfFile };
     console.log(pdfFile);
-    
+    setLoading(true);
     //console.log(CoAuthors[0]);
-    createAuthorWork(authorWorkData, topicid, selectedTrackId, conference._id,pdfFile)
+    createAuthorWork(authorWorkData, selectedTrackId, conference._id,pdfFile)
       .then((Response) => {
-        alert(Response.data.message);
-        // setCompletionMessage('Registration completed successfully!');
-        window.location.reload();
+       // alert(Response.data.message);
+         setCompletionMessage(Response.data.message);
+        // window.location.reload();
       })
       .catch(err => {
         alert(err.response.data.error);
         console.log(err);
       });
+      setLoading(false);
   };
 
   const handleAddCoAuthor = () => {
@@ -344,7 +347,7 @@ const AuthorRegistration = () => {
                 <div className="invalid-feedback">{errors.track}</div>
             </div>
             {/* Topic */}
-            <div className="mb-3">
+            {/* <div className="mb-3">
                 <label className="form-label">Topic:</label>
                 <select
                     className={`form-select mb-3 ${errors.topicid ? 'is-invalid' : ''}`}
@@ -357,7 +360,7 @@ const AuthorRegistration = () => {
                     ))}
                 </select>
                 <div className="invalid-feedback">{errors.topicid}</div>
-            </div>
+            </div> */}
             {/* Remaining fields */}
             {/* Title, Keywords, Abstract, PDF upload */}
             {/* Submission button */}
@@ -411,6 +414,13 @@ const AuthorRegistration = () => {
             <button type="submit" className="btn btn-primary w-100 mt-3">
                 Register
             </button>
+            {loading && (
+        <div className="d-flex justify-content-center">
+          <div className="spinner-border text-primary" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      )}
             </form>
             </div>
             </div>

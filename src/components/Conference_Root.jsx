@@ -86,7 +86,8 @@
     import React, { useState, useEffect } from 'react';
     import { useLoaderData } from 'react-router-dom';
     import { getConferenceByid,getAllConference } from '../Services/ConferenceServices';
-
+    import CardLink from './CardLink';
+    
 import { Spinner } from 'react-bootstrap';
 // import { getAllConference } from '../service/ConferenceService';
 // import { getConferenceById } from '../service/ConferenceService';
@@ -119,7 +120,7 @@ function Conference_Root() {
     const selectedConferenceId = event.target.value;
     console.log(selectedConferenceId);
         sessionStorage.setItem('con', selectedConferenceId);
-          alert("conference set successfully done");
+         // alert("conference set successfully done");
           getSelectedConference();
   };
 
@@ -185,78 +186,13 @@ function Conference_Root() {
     </div>
   </div>
   
-  <div className="row mt-3">
-    <div className="col-12 d-flex justify-content-center">
-    <Link to={"/committee-registration"} style={{ textDecoration: 'none' }}>
-
-      <div className="card1">
-        <div className='card border-primary' style={{ width: '100%', cursor: 'pointer' }}>
-          <div className='card-body d-flex justify-content-center align-items-center p-3'>
-            <p className='card-text mb-0'>Committee</p>
-          </div>
-        </div>
-      </div>
-      </Link>
-    </div>
-  </div>
-  
-  <div className="row mt-3">
-    <div className="col-12 d-flex justify-content-center">
-      <Link to={"/committee-members-registration"} style={{ textDecoration: 'none' }}>
-        <div className="card2">
-          <div className='card border-primary' style={{ width: '100%', cursor: 'pointer' }}>
-            <div className='card-body d-flex justify-content-center align-items-center p-3'>
-              <p className='card-text mb-0'>Members</p>
-            </div>
-          </div>
-        </div>
-      </Link>
-    </div>
-  </div>
-  
-  <div className="row mt-3">
-    <div className="col-12 d-flex justify-content-center">
-           <Link to={"/track-creation"}style={{ textDecoration: 'none' }}>
-
-      <div className="card1">
-        <div className='card border-primary' style={{ width: '100%', cursor: 'pointer' }}>
-          <div className='card-body d-flex justify-content-center align-items-center p-3'>
-            <p className='card-text mb-0'>Track</p>
-          </div>
-        </div>
-      </div>
-      </Link>
-    </div>
-  </div>
-  
-  <div className="row mt-3">
-    <div className="col-12 d-flex justify-content-center">
-      <Link to={"/reviewers-registration"} style={{ textDecoration: 'none' }}>
-        <div className="card2">
-          <div className='card border-primary' style={{ width: '100%', cursor: 'pointer' }}>
-            <div className='card-body d-flex justify-content-center align-items-center p-3'>
-              <p className='card-text mb-0'>Reviewers</p>
-            </div>
-          </div>
-        </div>
-      </Link>
-    </div>
-  </div>
-  
-  <div className="row mt-3">
-    <div className="col-12 d-flex justify-content-center">
-  <Link to={"/author-registration"} style={{ textDecoration: 'none' }}>
-
-      <div className="card1">
-        <div className='card border-primary' style={{ width: '100%', cursor: 'pointer' }}>
-          <div className='card-body d-flex justify-content-center align-items-center p-3'>
-            <p className='card-text mb-0'>Author Registration</p>
-          </div>
-        </div>
-      </div>
-      </Link>
-    </div>
-  </div>
+  <CardLink to="/committee-registration" text="Committee" />
+        <CardLink to="/committee-members-registration" text="Members" />
+        <CardLink to="/track-creation" text="Track" />
+        <CardLink to="/reviewers-registration" text="Reviewers" />
+        <CardLink to="#" text="Check Plagiarism" />
+        <CardLink to="#" text="Send for Copyright" />
+        <CardLink to="/author-registration" text="Author Registration" />
 </div>
 
 
@@ -435,7 +371,7 @@ function Conference_Root() {
                       className="form-select"
                       id="expectedSubmissions"
                       name="expectedSubmissions"
-                      value={SelectedConference.umber_of_papers||''}
+                      value={SelectedConference.number_of_papers||''}
                       disabled
                     >
                       <option value="None">None</option>

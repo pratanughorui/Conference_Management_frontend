@@ -556,7 +556,6 @@ const handleTransferSelectedReviewers = () => {
       formData.country !== '' &&
       formData.mobile !== '' &&
       formData.place !== '' &&
-      formData.role !== '' &&
       formData.state !== ''
     );
   };
@@ -789,7 +788,7 @@ const handleTransferSelectedReviewers = () => {
                   value={formData.role}
                   onChange={handleInputChange}
                 />
-                <label htmlFor="role">Role<span style={{ color: 'red' }}>*</span></label>
+                <label htmlFor="role">Role</label>
               </div>
             </div>
           </div>

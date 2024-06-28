@@ -1,5 +1,5 @@
 import React,{useEffect,useState} from 'react'
-import { createTracks, getConferencefromsession, listConferenceBtwDate,getConferenceById } from '../Services/ConferenceServices';
+import { createTracks, getConferencefromsession, listConferenceBtwDate,getConferenceById,deleteTrack } from '../Services/ConferenceServices';
 import { useLoaderData } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 const TrackCreation = () => {
@@ -9,6 +9,8 @@ const TrackCreation = () => {
   const navigate = useNavigate();
   const [conferenceId, setConferenceId] = useState('');
   const[existTrack,setExistTrack]=useState([]);
+  const [loading, setLoading] = useState(false);
+  const [loadingfordel, setLoadingfordel] = useState(false);
 
   useEffect(() => {
     
@@ -73,9 +75,9 @@ const TrackCreation = () => {
   };
 
   const handleFormSubmit = (e) => {
-    console.log("fff");
+   
     e.preventDefault();
-
+    setLoading(true);
     const newErrors = {};
     if (tracks.length === 0) newErrors.tracks = 'At least one track is required.';
     setErrors(newErrors);
@@ -90,9 +92,10 @@ const TrackCreation = () => {
     const object = { tracks: newArray.map(item => ({ track_name: item.track_name })) };
     console.log(object);
     createTracks(conference._id,object).then((Response)=>{
-      console.log(Response.data);
+      // console.log(Response.data);
        //setCompletionMessage(Response.data);
-       alert(Response.data.message);
+      //  alert(Response.data.message);
+      setLoading(false);
        window.location.reload();
     // setSubject('');
     // setTracks([]);
@@ -103,6 +106,7 @@ const TrackCreation = () => {
 
     // },2000);
     }).catch((err)=>{
+      setLoading(false);
       console.log(err);
     })
     // console.log({
@@ -123,6 +127,17 @@ const TrackCreation = () => {
     }
     setConferenceName(e.target.value);
   };
+  const handleRemoveCommittee=(trackid)=>{
+    setLoadingfordel(true);
+    deleteTrack(trackid).then((Response)=>{
+       setLoadingfordel(false);
+      window.location.reload();
+    }).catch((err)=>{
+      setLoadingfordel(false);
+
+      console.log(err);
+    })
+  }
   return (
     <div>
         
@@ -208,21 +223,45 @@ const TrackCreation = () => {
               <button type="submit" className="btn btn-primary w-100 mt-3" >
                 Submit
               </button>
+              {loading && (
+        <div className="d-flex justify-content-center">
+          <div className="spinner-border text-primary" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      )}
             </form>
           </div>
         </div>
       </div>
       <div className="col-md-6">
                     <table className="table">
+                    {loadingfordel && (
+        <div className="d-flex justify-content-center">
+          <div className="spinner-border text-primary" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      )}
                         <thead>
                             <tr>
                                 <th scope="col">Tracks</th>
+                                <th scope='col'>action</th>
                             </tr>
                         </thead>
                         <tbody>
                             {existTrack.map((track, index) => (
                                 <tr key={index}>
                                     <td>{track.track_name}</td>
+                                    <td>
+                        <button
+                            type="button"
+                            className="btn btn-danger btn-sm"
+                            onClick={() => handleRemoveCommittee(track._id)}
+                        >
+                            &times;
+                        </button>
+                    </td>
                                 </tr>
                             ))}
                             {/* <tr>
